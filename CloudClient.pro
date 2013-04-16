@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui webkit sql network phonon
+INCLUDEPATH += src/
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
