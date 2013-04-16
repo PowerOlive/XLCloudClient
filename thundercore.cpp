@@ -149,8 +149,11 @@ void ThunderCore::setCapcha(const QString &code)
 
 void ThunderCore::reloadCloudTasks()
 {
-    get (QUrl("http://dynamic.cloud.vip.xunlei.com/user_task?st=0&userid=" +
-              tc_session.value("userid")));
+    /// Never play with callback parameter!
+    get (QUrl("http://dynamic.cloud.vip.xunlei.com/interface/showtask_unfresh?"
+              "callback=tc&t="
+              "&type_id=4&page=1&tasknum=500"
+              "&p=1&interfrom=task"));
 }
 
 void ThunderCore::addCloudTaskPre(const QString &url)
@@ -244,9 +247,18 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
 
     if (urlStr.startsWith("http://dynamic.cloud.vip.xunlei.com/login"))
     {
-        reloadCloudTasks();
+        get (QUrl("http://dynamic.cloud.vip.xunlei.com/user_task?st=0&userid=" +
+                  tc_session.value("userid")));
 
         tc_loginStatus = NoError; emit StatusChanged (LoginChanged);
+
+        return;
+    }
+
+    if (urlStr.startsWith("http://dynamic.cloud.vip.xunlei.com/interface/showtask_unfresh"))
+    {
+        error (tr("Parsing task data .."), Info);
+        parseCloudPage(data);
 
         return;
     }
@@ -254,11 +266,10 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
     if (urlStr.startsWith("http://dynamic.cloud.vip.xunlei.com/user_task"))
     {
         /*
-        * It's best that we handle the page with QtScript!
+        * It's best to handle the page with QtScript!
         */
-
-        error (tr("Retrieved user page, analysing .."), Info);
-        parseCloudPage(data);
+        error (tr("Retrieved user page, fetching task data .."), Info);
+        reloadCloudTasks();
 
         return;
     }
@@ -502,61 +513,53 @@ Thunder::BitorrentTask ThunderCore::getUploadedBTTasks()
 
 void ThunderCore::parseCloudPage(const QByteArray &body)
 {
-    QWebPage page;
-    page.settings()->setAttribute(QWebSettings::JavaEnabled, false);
-    page.settings()->setAttribute(QWebSettings::JavascriptEnabled, false);
-    page.settings()->setAttribute(QWebSettings::AutoLoadImages, false);
-
-    page.mainFrame()->setHtml(QString::fromUtf8(body));
-    //    tc_session.clear();
-
-    /// FIND gdriveid
-    foreach (const QWebElement & input, page.mainFrame()->findAllElements("input"))
-        if (input.attribute("id") == "cok")
-        {
-            tc_session.insert("gdriveid", input.attribute("value"));
-
-            if (! tmp_cookieIsStored)
-            {
-                tmp_cookieIsStored = true;
-
-                Util::writeFile(Util::getHomeLocation() + "/.tdcookie",
-                                ".vip.xunlei.com\tTRUE\t/\tFALSE\t90147186842\tgdriveid\t" + tc_session.value("gdriveid").toAscii());
-            }
-            break;
-        }
-
-    if (! tc_session.contains("gdriveid"))
-    {
-        error (tr("Broken page! No gdrive id found, "
-                  "you will not be able to initiate any file transfer! "), Warning);
-        return;
-    }
-
-    tc_cloudTasks.clear();
-
     /// CACHE TASK IDS for automatic task renewal
     QStringList local_taskids;
 
-    /// FIND TASKS
-    foreach (const QWebElement & div, page.mainFrame()->findAllElements("div"))
+    QVariantMap json_map, json_info;
+    QJson::Parser parser;
+    bool ok = false;
+
+    QByteArray json = body; json.chop(1); json.remove(0, 3);
+    QVariant result = parser.parse(json, &ok);
+
+    if (! ok)
+        goto error;
+
+    json_map = result.toMap();
+    if (! json_map.contains("info"))
+        goto error;
+
+    json_info = json_map.value("info").toMap();
+    if (! json_info.contains("tasks"))
+        goto error;
+
+    /// LOAD TASKS
+    tc_cloudTasks.clear();
+
+    foreach (const QVariant & taskItem, json_info.value("tasks").toList())
     {
-        if (! div.attributeNames().contains("taskid")) continue;
+        const QVariantMap & taskMap = taskItem.toMap();
 
         Thunder::Task task;
-        task.id = div.attribute("taskid");
-        task.type = Thunder::Single;
+        task.id     = taskMap.value("id").toString();
+        task.type   = Thunder::Single;
 
-        foreach (const QWebElement & input, div.findAll("input"))
+        task.source = taskMap.value("url").toString();
+        task.cid    = taskMap.value("cid").toString();
+        task.name   = taskMap.value("taskname").toString();
+        task.link   = taskMap.value("lixian_url").toString();
+        task.bt_url = taskMap.value("url").toString();
+        task.size   = taskMap.value("ysfilesize").toULongLong();
+        task.status = taskMap.value("download_status").toInt();
+
+        if (! tmp_cookieIsStored)
         {
-            const QString & id = input.attribute("id");
-            if (id.startsWith("f_url"))       task.source = input.attribute("value");
-            if (id.startsWith("dcid"))        task.cid    = input.attribute("value");
-            if (id.startsWith("durl"))        task.name   = input.attribute("value");
-            if (id.startsWith("dl_url"))      task.link   = input.attribute("value");
-            if (id.startsWith("bt_down_url")) task.bt_url = input.attribute("value");
-            if (id.startsWith("ysfilesize"))  task.size   = input.attribute("value").toULongLong();
-            if (id.startsWith("d_status"))    task.status = input.attribute("value").toInt();
+            tmp_cookieIsStored = true;
+
+            tc_session.insert("gdriveid", taskMap.value("cookie").toString().remove(0, 9));
+            Util::writeFile(Util::getHomeLocation() + "/.tdcookie",
+                            ".vip.xunlei.com\tTRUE\t/\tFALSE\t90147186842\tgdriveid\t" + tc_session.value("gdriveid").toAscii());
         }
 
         if (! task.isEmpty())
@@ -574,6 +577,12 @@ void ThunderCore::parseCloudPage(const QByteArray &body)
 
     error (tr("%1 task(s) loaded.").arg(tc_cloudTasks.size()), Notice);
     emit StatusChanged(TaskChanged);
+
+    return;
+
+error:
+    error (tr("JSON parse error! Was the protocol changed?"), Warning);
+    return;
 }
 
 void ThunderCore::removeCloudTasks(const QStringList &ids)

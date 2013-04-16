@@ -137,6 +137,7 @@ signals:
 private:
     QList<Thunder::Task> tc_cloudTasks, tc_garbagedTasks;
     void parseCloudPage (const QByteArray & body);
+    void parseCloudTaskData (const QByteArray & jsonp);
     bool tmp_cookieIsStored;
 
     Thunder::RemoteTask tmp_singleTask;
