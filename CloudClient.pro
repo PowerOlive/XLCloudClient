@@ -30,64 +30,64 @@ icon.path = $${PREFIX}/share/icons/hicolor/256x256/apps/
 
 INSTALLS += de bi icon
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    thundercore.cpp \
-    util.cpp \
-    thunderpanel.cpp \
-    videopanel.cpp \
-    qmpwidget.cpp \
-    mplayer.cpp \
-    logview.cpp \
-    preferencesdlg.cpp \
-    browser.cpp \
-    addcloudtask.cpp \
-    transf0r.cpp \
-    downloader.cpp \
-    downloaderchildwidget.cpp \
-    saycapcha.cpp \
-    fileselectorline.cpp \
-    mediaplayer.cpp \
-    osd.cpp \
-    urllineedit.cpp \
-    searchlineedit.cpp \
-    simpleeditor.cpp
+SOURCES += src/main.cpp\
+        src/mainwindow.cpp \
+    src/thundercore.cpp \
+    src/util.cpp \
+    src/thunderpanel.cpp \
+    src/videopanel.cpp \
+    src/qmpwidget.cpp \
+    src/mplayer.cpp \
+    src/logview.cpp \
+    src/preferencesdlg.cpp \
+    src/browser.cpp \
+    src/addcloudtask.cpp \
+    src/transf0r.cpp \
+    src/downloader.cpp \
+    src/downloaderchildwidget.cpp \
+    src/saycapcha.cpp \
+    src/fileselectorline.cpp \
+    src/mediaplayer.cpp \
+    src/osd.cpp \
+    src/urllineedit.cpp \
+    src/searchlineedit.cpp \
+    src/simpleeditor.cpp
 
-HEADERS  += mainwindow.h \
-    thundercore.h \
-    CloudObject.h \
-    util.h \
-    thunderpanel.h \
-    videopanel.h \
-    qmpwidget.h \
-    mplayer.h \
-    logview.h \
-    preferencesdlg.h \
-    browser.h \
-    addcloudtask.h \
-    transf0r.h \
-    downloaderchildwidget.h \
-    downloader.h \
-    saycapcha.h \
-    fileselectorline.h \
-    mediaplayer.h \
-    osd.h \
-    urllineedit.h \
-    searchlineedit.h \
-    simpleeditor.h
+HEADERS  += src/mainwindow.h \
+    src/thundercore.h \
+    src/CloudObject.h \
+    src/util.h \
+    src/thunderpanel.h \
+    src/videopanel.h \
+    src/qmpwidget.h \
+    src/mplayer.h \
+    src/logview.h \
+    src/preferencesdlg.h \
+    src/browser.h \
+    src/addcloudtask.h \
+    src/transf0r.h \
+    src/downloaderchildwidget.h \
+    src/downloader.h \
+    src/saycapcha.h \
+    src/fileselectorline.h \
+    src/mediaplayer.h \
+    src/osd.h \
+    src/urllineedit.h \
+    src/searchlineedit.h \
+    src/simpleeditor.h
 
-FORMS    += mainwindow.ui \
-    thunderpanel.ui \
-    videopanel.ui \
-    logview.ui \
-    preferencesdlg.ui \
-    browser.ui \
-    addcloudtask.ui \
-    transf0r.ui \
-    downloaderchildwidget.ui \
-    saycapcha.ui \
-    fileselectorline.ui \
-    simpleeditor.ui
+FORMS    += ui/mainwindow.ui \
+    ui/thunderpanel.ui \
+    ui/videopanel.ui \
+    ui/logview.ui \
+    ui/preferencesdlg.ui \
+    ui/browser.ui \
+    ui/addcloudtask.ui \
+    ui/transf0r.ui \
+    ui/downloaderchildwidget.ui \
+    ui/saycapcha.ui \
+    ui/fileselectorline.ui \
+    ui/simpleeditor.ui
 
 RESOURCES += \
     resources.qrc
