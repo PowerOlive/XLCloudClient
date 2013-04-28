@@ -319,7 +319,10 @@ void MainWindow::on_actionExportTasks_triggered()
 
 void MainWindow::on_actionCleanupHistory_triggered()
 {
-    tcore->cleanupHistory();
+    if (QMessageBox::question(this, tr("Inrevokable action!"), tr("Clean up history records?"),
+                              QMessageBox::Yes, QMessageBox::No)
+            == QMessageBox::Yes)
+        tcore->cleanupHistory();
 }
 
 void MainWindow::on_actionReloadTasks_triggered()

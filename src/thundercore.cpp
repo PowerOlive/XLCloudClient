@@ -86,6 +86,7 @@ void ThunderCore::cleanupHistory()
               "?tcache=1328430359476&flag=6");
 
     url.addQueryItem("uid", tc_session.value("userid"));
+    get (url);
 }
 
 void ThunderCore::commitBitorrentTask(const QList<Thunder::BTSubTask> &tasks)
