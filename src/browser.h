@@ -67,14 +67,17 @@ signals:
 private:
     Ui::Browser *ui;
 
-   enum SearchEngine
+    enum SearchEngine
     {
         VeryCD,
         YYeTS
     };
 
-   SearchEngine m_engine;
-   QString m_discoveredUrls;
+    SearchEngine m_engine;
+    QString m_discoveredUrls;
+
+    void loadSettings ();
+    void saveSettings ();
 };
 
 #endif // BROWSER_H

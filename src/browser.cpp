@@ -31,8 +31,6 @@ Browser::Browser(QWidget *parent) :
 
     ui->loading->setMovie(new QMovie (":/resources/images/loading.gif"));
 
-    searchRegex.setPattern("ed2k://");
-
     ///
     QMenu *searchMenu = new QMenu (this);
     QAction *action = new QAction (QIcon(":/resources/images/yyets.png"),
@@ -50,10 +48,14 @@ Browser::Browser(QWidget *parent) :
     ///
     connect (ui->search, SIGNAL(returnPressed()),
              SLOT(returnPressed()));
+
+    ///
+    loadSettings();
 }
 
 Browser::~Browser()
 {
+    saveSettings();
     delete ui;
 }
 
@@ -70,6 +72,24 @@ void Browser::returnPressed ()
                           .arg(ui->search->text()));
         break;
     }
+}
+
+void Browser::loadSettings()
+{
+    QSettings settings;
+
+    settings.beginGroup("Browser");
+    searchRegex.setPattern(
+                settings.value("RegularExpression", "ed2k://").toString());
+    ui->webView->load(settings.value("lastVisitedPage").toString());
+}
+
+void Browser::saveSettings()
+{
+    QSettings settings;
+
+    settings.beginGroup("Browser");
+    settings.setValue("LastVisitedPage", ui->url->lineEdit()->text());
 }
 
 void Browser::set_verycd()

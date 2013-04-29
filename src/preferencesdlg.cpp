@@ -78,4 +78,8 @@ void PreferencesDlg::on_buttonBox_accepted()
     settings.setValue("mplayerPath", ui->mplayerPath->text());
     settings.setValue("mplayerBufferSize", ui->mplayerBuffer->text());
     settings.endGroup();
+
+    settings.beginGroup("Browser");
+    settings.setValue("RegularExpression", ui->browserLinksRegularExpression->text());
+    settings.endGroup();
 }
