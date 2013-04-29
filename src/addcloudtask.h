@@ -49,6 +49,8 @@ public:
         AddBatchTask
     };
 
+    void loadBrowserLinks (const QString & urls);
+
     QString getSingleTaskURL ();
     void setSingleTaskInfo (Thunder::RemoteTask remote_task);
     

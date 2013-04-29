@@ -70,6 +70,12 @@ void AddCloudTask::showEvent(QShowEvent *e)
     QDialog::showEvent(e);
 }
 
+void AddCloudTask::loadBrowserLinks(const QString &urls)
+{
+    ui->tabWidget->setCurrentIndex(2);
+    tcore->addBatchTaskPre (urls);
+}
+
 void AddCloudTask::slotRemoteTaskChanged(ThunderCore::RemoteTaskType type)
 {
     switch (type)

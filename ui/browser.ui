@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>510</width>
-    <height>476</height>
+    <width>614</width>
+    <height>378</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
+        <iconset resource="../resources.qrc">
          <normaloff>:/resources/images/back.png</normaloff>:/resources/images/back.png</iconset>
        </property>
        <property name="iconSize">
@@ -39,7 +39,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
+        <iconset resource="../resources.qrc">
          <normaloff>:/resources/images/forward.png</normaloff>:/resources/images/forward.png</iconset>
        </property>
        <property name="iconSize">
@@ -56,7 +56,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
+        <iconset resource="../resources.qrc">
          <normaloff>:/resources/images/reload.png</normaloff>:/resources/images/reload.png</iconset>
        </property>
        <property name="iconSize">
@@ -73,7 +73,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
+        <iconset resource="../resources.qrc">
          <normaloff>:/resources/images/stop.png</normaloff>:/resources/images/stop.png</iconset>
        </property>
        <property name="iconSize">
@@ -88,7 +88,7 @@
       <widget class="UrlLineEdit" name="url" native="true"/>
      </item>
      <item>
-      <widget class="SearchLineEdit" name="search"/>
+      <widget class="SearchLineEdit" name="search" native="true"/>
      </item>
      <item>
       <widget class="QLabel" name="loading">
@@ -120,6 +120,35 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QWidget" name="addLinksWidget" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="linksNotification">
+        <property name="styleSheet">
+         <string notr="true">background-color: #EFF8FF</string>
+        </property>
+        <property name="text">
+         <string>We found few links available</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="addToCloudButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Add to Cloud!</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -133,9 +162,14 @@
    <extends>QWidget</extends>
    <header>urllineedit.h</header>
   </customwidget>
+  <customwidget>
+   <class>SearchLineEdit</class>
+   <extends>QWidget</extends>
+   <header>searchlineedit.h</header>
+  </customwidget>
  </customwidgets>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../resources.qrc"/>
  </resources>
  <connections/>
 </ui>

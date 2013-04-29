@@ -89,6 +89,8 @@ private slots:
     void on_actionExportTasks_triggered();
     void on_actionCleanupHistory_triggered();
     void on_actionReloadTasks_triggered();
+
+    void slotBrowserLinksReady (const QString &urls);
 };
 
 #endif // MAINWINDOW_H

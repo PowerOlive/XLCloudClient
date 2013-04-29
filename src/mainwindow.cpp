@@ -64,6 +64,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect (tcore, SIGNAL(error(QString,ThunderCore::ErrorCategory)),
              SLOT(slotError(QString,ThunderCore::ErrorCategory)));
 
+    connect (bpanel, SIGNAL(browserLinksReady(QString)),
+             SLOT(slotBrowserLinksReady(QString)));
+
     ///
     osd->osd_menu->addAction(ui->actionNewTask);
     osd->osd_menu->addSeparator();
@@ -280,6 +283,13 @@ void MainWindow::on_actionNewTask_triggered()
     show ();
 
     AddCloudTask *act = new AddCloudTask (tcore, this);
+    act->exec();
+}
+
+void MainWindow::slotBrowserLinksReady(const QString &urls)
+{
+    AddCloudTask *act = new AddCloudTask (tcore, this);
+    act->loadBrowserLinks(urls);
     act->exec();
 }
 

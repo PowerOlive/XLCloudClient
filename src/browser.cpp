@@ -25,8 +25,15 @@ Browser::Browser(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->url->setWebView(ui->webView);
+
+    ui->loading->hide();
+    ui->addLinksWidget->hide();
+
     ui->loading->setMovie(new QMovie (":/resources/images/loading.gif"));
 
+    searchRegex.setPattern("ed2k://");
+
+    ///
     QMenu *searchMenu = new QMenu (this);
     QAction *action = new QAction (QIcon(":/resources/images/yyets.png"),
                                    tr("YYeTS"), this);
@@ -102,6 +109,9 @@ void Browser::on_webView_loadStarted()
 {
     ui->loading->show();
     ui->loading->movie()->start();
+
+    m_discoveredUrls.clear();
+    ui->addLinksWidget->hide();
 }
 
 void Browser::on_webView_loadFinished(bool arg1)
@@ -109,4 +119,31 @@ void Browser::on_webView_loadFinished(bool arg1)
     Q_UNUSED(arg1);
     ui->loading->hide();
     ui->loading->movie()->stop();
+
+    m_discoveredUrls.clear();
+    int count = 0;
+    foreach (const QWebElement & elem,
+             ui->webView->page()->mainFrame()->findAllElements("a"))
+    {
+        const QString & href = elem.attribute("href");
+        if (searchRegex.indexIn(href) == -1)
+            continue;
+
+        m_discoveredUrls.append(href).append("\n");
+        ++ count;
+    }
+
+    if (! m_discoveredUrls.isEmpty())
+    {
+        ui->linksNotification->setText(
+                    tr("  We found %1 link(s) on current page, "
+                       "click to add them  ")
+                    .arg(count));
+        ui->addLinksWidget->show();
+    }
+}
+
+void Browser::on_addToCloudButton_clicked()
+{
+    emit browserLinksReady(m_discoveredUrls);
 }

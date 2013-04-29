@@ -129,7 +129,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="resources.qrc">:/resources/images/open.png</pixmap>
+          <pixmap resource="../resources.qrc">:/resources/images/open.png</pixmap>
          </property>
         </widget>
        </item>
@@ -180,7 +180,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="resources.qrc">:/resources/images/document-open-folder.png</pixmap>
+          <pixmap resource="../resources.qrc">:/resources/images/document-open-folder.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -222,7 +222,7 @@
           <string>...</string>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset resource="../resources.qrc">
            <normaloff>:/resources/images/user-trash.png</normaloff>:/resources/images/user-trash.png</iconset>
          </property>
         </widget>
@@ -250,7 +250,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../resources.qrc"/>
  </resources>
  <connections/>
 </ui>

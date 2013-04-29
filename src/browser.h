@@ -23,6 +23,9 @@
 #include <QMovie>
 #include <QAction>
 #include <QMenu>
+#include <QWebElement>
+#include <QWebPage>
+#include <QSettings>
 #include <QUrl>
 #include <QDebug>
 
@@ -37,6 +40,8 @@ class Browser : public QWidget
 public:
     explicit Browser(QWidget *parent = 0);
     ~Browser();
+
+    QRegExp searchRegex;
     
 private slots:
     void on_reload_clicked();
@@ -54,6 +59,11 @@ private slots:
 
     void returnPressed ();
 
+    void on_addToCloudButton_clicked();
+
+signals:
+    void browserLinksReady (const QString & url);
+
 private:
     Ui::Browser *ui;
 
@@ -64,6 +74,7 @@ private:
     };
 
    SearchEngine m_engine;
+   QString m_discoveredUrls;
 };
 
 #endif // BROWSER_H

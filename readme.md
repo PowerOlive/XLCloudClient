@@ -32,7 +32,7 @@
 
 ![Screenshot] (https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/2.png "Desktop screenshot")
 
-资源集成没有完全实现，有空在做：
+从0.42开始，你可以直接从URL里面读取链接，正则表达式目前设定为 "ed2k://",
 
 ![Screenshot] (https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/3.png "Desktop screenshot")
 
