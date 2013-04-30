@@ -517,7 +517,7 @@ void ThunderCore::parseCloudPage(const QByteArray &body)
     /// CACHE TASK IDS for automatic task renewal
     QStringList local_taskids;
 
-    QVariantMap json_map, json_info;
+    QVariantMap json_map, json_info, user_info;
     QJson::Parser parser;
     bool ok = false;
 
@@ -533,6 +533,10 @@ void ThunderCore::parseCloudPage(const QByteArray &body)
 
     json_info = json_map.value("info").toMap();
     if (! json_info.contains("tasks"))
+        goto error;
+
+    user_info = json_info.value("user").toMap();
+    if (user_info.isEmpty())
         goto error;
 
     /// LOAD TASKS
@@ -557,10 +561,16 @@ void ThunderCore::parseCloudPage(const QByteArray &body)
         if (! tmp_cookieIsStored)
         {
             tmp_cookieIsStored = true;
+            tc_session.insert("gdriveid", user_info.value("cookie").toString());
 
-            tc_session.insert("gdriveid", taskMap.value("cookie").toString().remove(0, 9));
             Util::writeFile(Util::getHomeLocation() + "/.tdcookie",
-                            ".vip.xunlei.com\tTRUE\t/\tFALSE\t90147186842\tgdriveid\t" + tc_session.value("gdriveid").toAscii());
+                                ".vip.xunlei.com\tTRUE\t/\tFALSE\t90147186842\tgdriveid\t" +
+                            tc_session.value("gdriveid").toAscii() + "\n");
+
+//            Util::writeCookieToFile(Util::getHomeLocation() + "/.tdcookie",
+//                                    tc_nam->cookieJar()->cookiesForUrl(
+//                                        QUrl("http://gdl.lixian.vip.xunlei.com")));
+
         }
 
         if (! task.isEmpty())

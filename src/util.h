@@ -120,6 +120,13 @@ public:
      * \return
      */
     static Thunder::AutoOpen shouldAutoOpen (const QString & fileName);
+
+    /*!
+     * \brief Write cookie to file
+     * \param cookies
+     */
+    static void writeCookieToFile (const QString & fileName,
+                                   const QList<QNetworkCookie> & cookies);
     
 signals:
     

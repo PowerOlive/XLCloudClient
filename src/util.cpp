@@ -28,6 +28,26 @@ QString Util::getHomeLocation()
     return QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
 }
 
+void Util::writeCookieToFile (const QString &fileName,
+                              const QList<QNetworkCookie> &cookies)
+{
+    QString result;
+
+    foreach (const QNetworkCookie & cookie, cookies)
+    {
+        result.append(QString ("%1\t%2\t%3\t%4\t%5\t%6\t%7\n")
+                      .arg(cookie.domain())
+                      .arg(cookie.isSecure() ? "TRUE" : "FALSE")
+                      .arg(cookie.path())
+                      .arg("FALSE")
+                      .arg(QString::number(cookie.expirationDate().currentMSecsSinceEpoch()))
+                      .arg(QString::fromAscii(cookie.name()))
+                      .arg(QString::fromAscii(cookie.value())));
+    }
+
+    Util::writeFile(fileName, result.toAscii());
+}
+
 void Util::init()
 {
     // not good design. @TODO
