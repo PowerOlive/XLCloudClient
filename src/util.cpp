@@ -50,13 +50,18 @@ void Util::writeCookieToFile (const QString &fileName,
 
 void Util::init()
 {
-    // not good design. @TODO
+    /// not really good design. @TODO
     static_autoOpenMapping.insert("mkv", Thunder::Video);
     static_autoOpenMapping.insert("avi", Thunder::Video);
     static_autoOpenMapping.insert("rmvb", Thunder::Video);
     static_autoOpenMapping.insert("pdf", Thunder::Document);
     static_autoOpenMapping.insert("chm", Thunder::Document);
     static_autoOpenMapping.insert("rar", Thunder::Document);
+
+    static_autoOpenMapping.insert("png", Thunder::Image);
+    static_autoOpenMapping.insert("jpg", Thunder::Image);
+    static_autoOpenMapping.insert("jpeg", Thunder::Image);
+    static_autoOpenMapping.insert("gif", Thunder::Image);
 
     ///
     static_iconMapping.insert("avi", ":/resources/images/movie.png");

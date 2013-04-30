@@ -126,6 +126,12 @@ signals:
     void StatusChanged (ThunderCore::ChangeType pt);
 
     /*!
+     * \brief Image downloaded, opening subviewer
+     * \param data
+     */
+    void ImageRetrieved (const QByteArray & data);
+
+    /*!
      * \brief Remote task changed, links ready!
      *        In use of further notification for UI
      * \param rt

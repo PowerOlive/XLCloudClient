@@ -47,7 +47,8 @@ public:
     enum RequestType
     {
         Download,
-        Preview
+        Preview,
+        Image
     };
 
     enum IndirectRequestType

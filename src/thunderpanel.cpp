@@ -322,6 +322,9 @@ void ThunderPanel::on_treeView_doubleClicked(const QModelIndex &index)
     case Thunder::Document:
         emit doThisLink(task, Download, true);
         break;
+    case Thunder::Image:
+        emit doThisLink(task, Image, true);
+        break;
     }
 
 }

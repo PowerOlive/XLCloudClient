@@ -40,7 +40,10 @@ namespace Thunder
         Video,
 
         // download + open
-        Document
+        Document,
+
+        // Image, open in subviewer
+        Image
     };
 
     struct RemoteTask

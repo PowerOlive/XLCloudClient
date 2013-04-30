@@ -169,6 +169,8 @@ void MainWindow::slotRequestReceived(const Thunder::RemoteTask &task,
 
     switch (type)
     {
+    case ThunderPanel::Image:
+        break;
     case ThunderPanel::Preview:
         vpanel->play(task.url);
         ui->tabWidget->setCurrentIndex(1);
