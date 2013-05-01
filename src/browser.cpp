@@ -167,3 +167,8 @@ void Browser::on_addToCloudButton_clicked()
 {
     emit browserLinksReady(m_discoveredUrls);
 }
+
+void Browser::on_backwd_clicked()
+{
+    ui->webView->back();
+}

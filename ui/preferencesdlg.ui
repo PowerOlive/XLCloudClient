@@ -233,7 +233,7 @@
       <attribute name="title">
        <string>Browser</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_6">
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
         <widget class="QGroupBox" name="groupBox_5">
          <property name="title">
@@ -259,6 +259,40 @@
            </layout>
           </item>
          </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_6">
+         <property name="title">
+          <string>VeryCD Account</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>Username</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="verycdAccount"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>Credential</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="verycdCred"/>
+          </item>
+         </layout>
+         <zorder>verticalSpacer_3</zorder>
+         <zorder>verycdAccount</zorder>
+         <zorder>label_11</zorder>
+         <zorder>verycdCred</zorder>
+         <zorder>label_12</zorder>
         </widget>
        </item>
        <item>

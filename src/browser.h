@@ -61,6 +61,8 @@ private slots:
 
     void on_addToCloudButton_clicked();
 
+    void on_backwd_clicked();
+
 signals:
     void browserLinksReady (const QString & url);
 
