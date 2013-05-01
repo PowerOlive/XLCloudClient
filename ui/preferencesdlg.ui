@@ -237,9 +237,16 @@
        <item>
         <widget class="QGroupBox" name="groupBox_5">
          <property name="title">
-          <string>Misc</string>
+          <string>Links discovery</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QCheckBox" name="autoPopupDialog">
+            <property name="text">
+             <string>Popup dialog automatically</string>
+            </property>
+           </widget>
+          </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
@@ -288,7 +295,6 @@
            <widget class="QLineEdit" name="verycdCred"/>
           </item>
          </layout>
-         <zorder>verticalSpacer_3</zorder>
          <zorder>verycdAccount</zorder>
          <zorder>label_11</zorder>
          <zorder>verycdCred</zorder>

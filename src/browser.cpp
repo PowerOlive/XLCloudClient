@@ -121,7 +121,6 @@ void Browser::on_stop_clicked()
 
 void Browser::on_webView_linkClicked(const QUrl &arg1)
 {
-    qDebug() << "Clicked on: " << arg1;
     ui->webView->load(arg1);
 }
 
