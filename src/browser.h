@@ -29,6 +29,8 @@
 #include <QUrl>
 #include <QDebug>
 
+#include "unifiedpage.h"
+
 namespace Ui {
 class Browser;
 }

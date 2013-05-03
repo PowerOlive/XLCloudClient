@@ -24,6 +24,7 @@ Browser::Browser(QWidget *parent) :
     ui(new Ui::Browser)
 {
     ui->setupUi(this);
+    ui->webView->setPage(new UnifiedPage);
     ui->url->setWebView(ui->webView);
 
     ui->loading->hide();
@@ -81,7 +82,10 @@ void Browser::loadSettings()
     settings.beginGroup("Browser");
     searchRegex.setPattern(
                 settings.value("RegularExpression", "ed2k://").toString());
-    ui->webView->load(settings.value("lastVisitedPage").toString());
+    ui->webView->load(
+                QString::fromUtf8(
+                    QByteArray::fromPercentEncoding(
+                        settings.value("lastVisitedPage").toByteArray())));
 }
 
 void Browser::saveSettings()

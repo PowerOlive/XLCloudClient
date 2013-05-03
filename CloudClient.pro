@@ -52,7 +52,8 @@ SOURCES += src/main.cpp\
     src/osd.cpp \
     src/urllineedit.cpp \
     src/searchlineedit.cpp \
-    src/simpleeditor.cpp
+    src/simpleeditor.cpp \
+    src/unifiedpage.cpp
 
 HEADERS  += src/mainwindow.h \
     src/thundercore.h \
@@ -75,7 +76,8 @@ HEADERS  += src/mainwindow.h \
     src/osd.h \
     src/urllineedit.h \
     src/searchlineedit.h \
-    src/simpleeditor.h
+    src/simpleeditor.h \
+    src/unifiedpage.h
 
 FORMS    += ui/mainwindow.ui \
     ui/thunderpanel.ui \
