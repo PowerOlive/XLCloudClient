@@ -205,6 +205,12 @@ void AddCloudTask::on_buttonBox_accepted()
     }
 }
 
+void AddCloudTask::loadDraggedInTorrent(const QUrl &url)
+{
+    ui->tabWidget->setCurrentIndex(1);
+    tcore->uploadBitorrent(url.toLocalFile());
+}
+
 void AddCloudTask::on_uploadBTFile_clicked()
 {
     const QString & file = QFileDialog::getOpenFileName(this,

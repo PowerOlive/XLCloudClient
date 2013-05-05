@@ -25,6 +25,8 @@
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QFileDialog>
+#include <QDragEnterEvent>
+#include <QDropEvent>
 
 #include "thundercore.h"
 #include "simpleeditor.h"
@@ -50,6 +52,7 @@ public:
     };
 
     void loadBrowserLinks (const QString & urls);
+    void loadDraggedInTorrent (const QUrl & url);
 
     QString getSingleTaskURL ();
     void setSingleTaskInfo (Thunder::RemoteTask remote_task);

@@ -62,6 +62,8 @@ private:
 
 protected:
     void keyPressEvent(QKeyEvent *e);
+    void dropEvent(QDropEvent *e);
+    void dragEnterEvent(QDragEnterEvent *e);
 
 private slots:
     void slotError (const QString & body, ThunderCore::ErrorCategory category);

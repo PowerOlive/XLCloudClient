@@ -94,6 +94,31 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::dropEvent(QDropEvent *e)
+{
+    if (e->mimeData()->hasUrls())
+    {
+        const QList<QUrl> & urls = e->mimeData()->urls();
+        if (urls.length() > 1)
+        {
+            QMessageBox::information(this,
+                                     tr("Multiple files detected"),
+                                     tr("%1 can't handle more than one file at this moment, "
+                                        "only the first one will be used.").arg(QApplication::applicationName()),
+                                     QMessageBox::Ok);
+        }
+
+        AddCloudTask *act = new AddCloudTask (tcore, this);
+        act->loadDraggedInTorrent(urls.first());
+        act->exec();
+    }
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *e)
+{
+    e->accept();
+}
+
 void MainWindow::slotShowOrHideWindow()
 {
     setVisible(! isVisible());
