@@ -290,10 +290,10 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
     {
         QStringList fields = Util::parseFunctionFields(data);
 
-        if (fields.size() != 10)
+        if (fields.size() < 10)
         {
-            error (tr("Protocol changed or parser failure, submit this line: %1")
-                   .arg(QString::fromAscii(data)), Warning);
+            error (tr("Protocol changed or parser failure (incorrect column count), submit this line: %1")
+                   .arg(QString::fromUtf8(data)), Warning);
             return;
         }
 
