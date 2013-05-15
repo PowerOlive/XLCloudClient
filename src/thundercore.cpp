@@ -444,10 +444,10 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
         QByteArray json = data;
 
         // remove <script>document.domain='xunlei.com';parent.begin_task_batch_resp(
-        json.remove(0, 66);
+        json.remove(0, json.indexOf("(") + 1);
 
         // chop ,'123456');</script>"
-        json.chop(20);
+        json.chop(json.length() - json.lastIndexOf("]") - 1);
 
         QJson::Parser parser;
         bool ok = false;
