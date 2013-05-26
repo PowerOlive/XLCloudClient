@@ -60,6 +60,8 @@ public:
     explicit ThunderPanel(QWidget *parent = 0);
     ~ThunderPanel();
 
+    void resizeColumnToContents (int column);
+
     void setQuickViewMode (bool ok);
 
     void setCloudTasks (const QList<Thunder::Task> & tasks);

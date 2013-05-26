@@ -107,7 +107,7 @@ public:
 
     void uploadBitorrent (const QString & file);
     void commitBitorrentTask (const QList<Thunder::BTSubTask> &tasks);
-    void getContentsOfBTFolder (const Thunder::Task &bt_task);
+    void getContentsOfBTFolder (const Thunder::Task &bt_task, const int &page);
 
     Thunder::RemoteTask getSingleRemoteTask ();
     Thunder::BitorrentTask getUploadedBTTasks();

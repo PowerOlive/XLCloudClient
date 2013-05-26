@@ -246,7 +246,7 @@ void MainWindow::slotStatusChanged(ThunderCore::ChangeType type)
         foreach (const Thunder::Task & task, cloudTasks)
             if (task.type == Thunder::BT)
             {
-                tcore->getContentsOfBTFolder(task);
+                tcore->getContentsOfBTFolder(task, 1);
             }
     }
         break;

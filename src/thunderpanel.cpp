@@ -90,6 +90,11 @@ ThunderPanel::~ThunderPanel()
     delete ui;
 }
 
+void ThunderPanel::resizeColumnToContents(int column)
+{
+    ui->treeView->resizeColumnToContents(column);
+}
+
 void ThunderPanel::keyEvent(QKeyEvent *e)
 {
     switch (e->modifiers())

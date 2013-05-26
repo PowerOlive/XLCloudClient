@@ -135,10 +135,12 @@ void ThunderCore::loginWithCapcha(const QByteArray &capcha)
               tc_passwd, QString::fromAscii(capcha), true).toAscii());
 }
 
-void ThunderCore::getContentsOfBTFolder(const Thunder::Task &bt_task)
+void ThunderCore::getContentsOfBTFolder(const Thunder::Task &bt_task, const int & page)
 {
     get ("http://dynamic.cloud.vip.xunlei.com/interface/fill_bt_list"
-         "?callback=a&g_net=1&p=1&noCacheIE=1328405858893&infoid=" + bt_task.cid +
+         "?callback=fill_bt_list&g_net=1&noCacheIE=1328405858893&"
+         "&p=" + QString::number(page) +
+         "&infoid=" + bt_task.cid +
          "&tid=" + bt_task.id +
          "&uid=" + tc_session.value("userid"));
 }
@@ -383,12 +385,12 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
 
     if (urlStr.startsWith("http://dynamic.cloud.vip.xunlei.com/interface/fill_bt_list"))
     {
-        error(tr("BT task page retrieved, parsing .."), Notice);
+        error(tr("BT task page retrieved, parsing (page %1)..").arg(url.queryItemValue("p")), Notice);
 
         QByteArray json = data;
 
         // remove a(
-        json.remove (0, 2);
+        json.remove (0, 13);
 
         // chop )
         json.chop (1);
@@ -412,15 +414,34 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
         Thunder::BitorrentTask bt_task;
         const QVariantMap & resultMap = result.toMap();
 
+        int now_page = resultMap.value ("now_page").toInt();
+        int btnum = resultMap.value("btnum").toInt();
+        int btpernum = resultMap.value("btpernum").toInt();
+
+        if (btpernum != 0)
+        {
+            if (now_page < btnum / btpernum)
+            {
+                /// dirty hack: repicate current request!
+                QNetworkRequest request = reply->request();
+                QUrl url = request.url();
+                url.removeQueryItem("p");
+                url.addQueryItem("p", QString::number(++ now_page));
+                request.setUrl(url);
+
+                tc_nam->get(request);
+            }
+        }
+
         if (resultMap.size() == 0)
         {
             error(tr("BT task not finished, skipping sub tasks."), Notice);
             return;
         }
 
-        bt_task.taskid = resultMap.keys().first();
+        bt_task.taskid = resultMap.value("Tid").toString();
 
-        QVariant mainMap = resultMap.value(bt_task.taskid);
+        QVariant mainMap = resultMap.value("Record");
 
         foreach (const QVariant & record, mainMap.toList())
         {
