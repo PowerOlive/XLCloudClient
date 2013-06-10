@@ -113,6 +113,10 @@ private slots:
     void slotCopyDownloadAddress ();
     void slotCopySourceAddress ();
     void slotCopyTaskName ();
+
+    void slotResizeFirstColumnOfTreeView();
+    void slotResizeAllColumnsOfTreeView();
+
     void on_treeView_doubleClicked(const QModelIndex &index);
     void on_filter_textChanged(const QString &arg1);
 };

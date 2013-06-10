@@ -73,6 +73,10 @@ ThunderPanel::ThunderPanel(QWidget *parent) :
     connect (action, SIGNAL(triggered()), ui->treeView, SLOT(expandAll()));
     my_contextMenu->addAction(action);
 
+    action = new QAction (tr("Resize Columns"), this);
+    connect (action, SIGNAL(triggered()), this, SLOT(slotResizeAllColumnsOfTreeView()));
+    my_contextMenu->addAction(action);
+
     connect (ui->treeView, SIGNAL(customContextMenuRequested(QPoint)),
              SLOT(slotShowContextMenu(QPoint)));
 
@@ -83,11 +87,23 @@ ThunderPanel::ThunderPanel(QWidget *parent) :
 
     ui->treeView->setModel(my_model);
     ui->treeView->resizeColumnToContents(0);
+    connect (ui->treeView, SIGNAL(expanded(QModelIndex)), SLOT(slotResizeFirstColumnOfTreeView()));
 }
 
 ThunderPanel::~ThunderPanel()
 {
     delete ui;
+}
+
+void ThunderPanel::slotResizeAllColumnsOfTreeView()
+{
+    for (int i = 0; i < my_filterModel->columnCount(); ++i)
+        ui->treeView->resizeColumnToContents(i);
+}
+
+void ThunderPanel::slotResizeFirstColumnOfTreeView()
+{
+    ui->treeView->resizeColumnToContents(0);
 }
 
 void ThunderPanel::resizeColumnToContents(int column)

@@ -222,7 +222,7 @@ void MainWindow::slotIndirectRequestReceived(ThunderPanel::IndirectRequestType t
     {
         const QStringList & ids = tpanel->getSelectedTaskIDs();
 
-        if (question ( tr("Remove selected %1 items?").arg(ids.size())) )
+        if (question ( tr("Remove selected %1 item(s)?").arg(ids.size())) )
             return;
 
         tcore->removeCloudTasks(ids);
