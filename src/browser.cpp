@@ -78,8 +78,22 @@ void Browser::returnPressed ()
 void Browser::loadSettings()
 {
     QSettings settings;
-
     settings.beginGroup("Browser");
+
+    /// verycd logon
+    const QString & verycdAccount = settings.value("verycdAccount").toString().trimmed();
+    const QString & verycdCred    = settings.value("verycdCred").toString().trimmed();
+
+    if (! verycdAccount.isEmpty() && ! verycdCred.isEmpty())
+    {
+        QNetworkRequest request (QUrl ("http://www.verycd.com/signin"));
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+        ui->webView->page()->networkAccessManager()->post(
+                    request,
+                    "username=" + verycdAccount.toUtf8().toPercentEncoding() + "&password=" + verycdCred.toUtf8().toPercentEncoding());
+    }
+
     searchRegex.setPattern(
                 settings.value("RegularExpression", "ed2k://").toString());
     ui->webView->load(
@@ -94,6 +108,7 @@ void Browser::saveSettings()
 
     settings.beginGroup("Browser");
     settings.setValue("LastVisitedPage", ui->url->lineEdit()->text());
+    settings.endGroup();
 }
 
 void Browser::set_verycd()

@@ -49,6 +49,12 @@ PreferencesDlg::PreferencesDlg(QWidget *parent) :
     ui->mplayerBuffer->setText(settings.value("mplayerBufferSize").toString());
     ui->mplayerPath->setText(settings.value("mplayerPath").toString());
     settings.endGroup();
+
+    settings.beginGroup("Browser");
+    ui->browserLinksRegularExpression->setText(settings.value("RegularExpression").toString());
+    ui->verycdAccount->setText(settings.value("verycdAccount").toString());
+    ui->verycdCred->setText(settings.value("verycdCred").toString());
+    settings.endGroup();
 }
 
 PreferencesDlg::~PreferencesDlg()
@@ -80,6 +86,10 @@ void PreferencesDlg::on_buttonBox_accepted()
     settings.endGroup();
 
     settings.beginGroup("Browser");
-    settings.setValue("RegularExpression", ui->browserLinksRegularExpression->text());
+    settings.setValue("RegularExpression", ui->browserLinksRegularExpression->text().trimmed().isEmpty()
+                      ? "ed2k://"
+                      : ui->browserLinksRegularExpression->text());
+    settings.setValue("verycdAccount", ui->verycdAccount->text());
+    settings.setValue("verycdCred", ui->verycdCred->text());
     settings.endGroup();
 }
