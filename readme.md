@@ -33,7 +33,7 @@
 
 ![Screenshot] (https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/2.png "Desktop screenshot")
 
-从0.42开始，你可以直接从URL里面读取链接，正则表达式目前设定为 "ed2k://", **设置verycd账户密码之后，可以自动登录**
+从0.42开始，你可以直接从URL里面读取链接，正则表达式目前设定为 "ed2k://", **设置verycd账户密码之后，可以自动登录电驴:**
 
 ![Screenshot] (https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/3.png "Desktop screenshot")
 
