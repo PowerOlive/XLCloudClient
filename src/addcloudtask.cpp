@@ -239,5 +239,5 @@ void AddCloudTask::on_getClipboardBtn_clicked()
 
 void AddCloudTask::on_magnet_textChanged(const QString &arg1)
 {
-
+    Q_UNUSED(arg1);
 }
