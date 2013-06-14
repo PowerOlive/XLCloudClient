@@ -70,6 +70,8 @@ private slots:
 
     void on_getClipboardBtn_clicked();
 
+    void on_magnet_textChanged(const QString &arg1);
+
 protected:
     void showEvent(QShowEvent *e);
 

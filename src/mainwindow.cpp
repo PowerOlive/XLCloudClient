@@ -220,12 +220,15 @@ void MainWindow::slotIndirectRequestReceived(ThunderPanel::IndirectRequestType t
 {
     if (type == ThunderPanel::RemoveTasks)
     {
-        const QStringList & ids = tpanel->getSelectedTaskIDs();
+        const QPair<QStringList, QList<int> > & ids = tpanel->getSelectedTaskIDsAndRows();
 
-        if (question ( tr("Remove selected %1 item(s)?").arg(ids.size())) )
+        if (question ( tr("Remove selected %1 item(s)?").arg(ids.first.size())) )
             return;
 
-        tcore->removeCloudTasks(ids);
+        tcore->removeCloudTasks(ids.first);
+
+        /// Buggy? Unlikely.
+        tpanel->removeSelectedTasks(ids.second);
 
     } else if (type == ThunderPanel::AddTask) {
 

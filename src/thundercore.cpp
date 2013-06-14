@@ -279,6 +279,9 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
 
     if (urlStr.startsWith("http://dynamic.cloud.vip.xunlei.com/interface/task_delete"))
     {
+        error (tr("Task removed from cloud!"), Info);
+        return;
+
         /*!
          * \brief Reload user page!
          */

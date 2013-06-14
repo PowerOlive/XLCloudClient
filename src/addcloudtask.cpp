@@ -236,3 +236,8 @@ void AddCloudTask::on_getClipboardBtn_clicked()
 {
     tcore->addBatchTaskPre(QApplication::clipboard()->text());
 }
+
+void AddCloudTask::on_magnet_textChanged(const QString &arg1)
+{
+
+}

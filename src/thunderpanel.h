@@ -66,7 +66,8 @@ public:
 
     void setCloudTasks (const QList<Thunder::Task> & tasks);
 
-    QStringList getSelectedTaskIDs ();
+    QPair<QStringList, QList<int> > getSelectedTaskIDsAndRows ();
+    void removeSelectedTasks (const QList<int> & ids);
     Thunder::RemoteTask getFirstSelectedTask ();
 
     void keyEvent (QKeyEvent *e);

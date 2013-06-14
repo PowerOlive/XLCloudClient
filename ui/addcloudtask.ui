@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>488</width>
-    <height>341</height>
+    <width>486</width>
+    <height>339</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -104,7 +104,7 @@
          <item row="1" column="0">
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>Magnet link:</string>
+            <string>Magnet Link:</string>
            </property>
           </widget>
          </item>
@@ -145,29 +145,12 @@
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <layout class="QGridLayout" name="gridLayout_3">
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>Edit Directly</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="getClipboardBtn">
-           <property name="text">
-            <string>Run this action</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_6">
-           <property name="text">
-            <string>Analyse URL:</string>
-           </property>
-          </widget>
-         </item>
          <item row="3" column="1">
-          <widget class="QLineEdit" name="analyseURL"/>
+          <widget class="QPushButton" name="openEditorBtn">
+           <property name="text">
+            <string>Open Editor</string>
+           </property>
+          </widget>
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_5">
@@ -176,10 +159,23 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
-          <widget class="QPushButton" name="openEditorBtn">
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_7">
            <property name="text">
-            <string>Open Editor</string>
+            <string>Edit Directly</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="getClipboardBtn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Run this action</string>
            </property>
           </widget>
          </item>

@@ -236,15 +236,25 @@ QString ThunderPanel::getUserDataByOffset (unsigned long long offset, int row)
     return QString ();
 }
 
-QStringList ThunderPanel::getSelectedTaskIDs()
+void ThunderPanel::removeSelectedTasks (const QList<int> &ids)
 {
-    QStringList result;
+    foreach (const int & row, ids)
+    {
+        my_filterModel->removeRow(row);
+    }
+}
+
+QPair<QStringList, QList<int> > ThunderPanel::getSelectedTaskIDsAndRows()
+{
+    QPair<QStringList, QList<int> > result;
 
     foreach (const QModelIndex & idx,
              ui->treeView->selectionModel()->selectedIndexes())
-        if (idx.column() == 0)
+        if (! idx.parent().isValid()
+                && idx.column() == 0)
         {
-            result.append(getUserDataByOffset(OFFSET_TASKID, idx.row()));
+            result.first.append(getUserDataByOffset(OFFSET_TASKID, idx.row()));
+            result.second.push_back(idx.row());
         }
 
     return result;
