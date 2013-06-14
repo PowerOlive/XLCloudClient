@@ -23,7 +23,7 @@ public:
      * \param If true, it's a saveFileDialog otherwise it wold be a openFileDialog
      * \param Filter on file names
      */
-    void setParam (bool ok, const QString & nameFilter);
+    void setParam (bool ok, const QString & nameFilter = QString());
 
     /*!
      * \brief Get the text in the lineedit

@@ -48,6 +48,7 @@ PreferencesDlg::PreferencesDlg(QWidget *parent) :
     settings.beginGroup("Video");
     ui->mplayerBuffer->setText(settings.value("mplayerBufferSize").toString());
     ui->mplayerPath->setText(settings.value("mplayerPath").toString());
+    ui->mplayerPath->setParam(true);
     settings.endGroup();
 
     settings.beginGroup("Browser");
