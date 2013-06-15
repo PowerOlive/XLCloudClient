@@ -165,8 +165,9 @@ void ThunderPanel::slotDownloadThisTask()
 
 void ThunderPanel::slotCopyAria2cScript()
 {
-    const QString & name = getUserDataByOffset(0);
-    const QString & link = getUserDataByOffset(OFFSET_DOWNLOAD);
+    /// No bad case seen yet, escaping single quote seems necessary
+    const QString & name = getUserDataByOffset(0).replace("'", "\\'");
+    const QString & link = getUserDataByOffset(OFFSET_DOWNLOAD).replace("'", "\\'");
     if (name.isEmpty() || link.isEmpty()) return;
 
     QApplication::clipboard()->setText(QString("aria2c --load-cookies '%1' '%2' -o '%3'")
