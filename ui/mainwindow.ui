@@ -86,7 +86,7 @@
   </action>
   <action name="actionExportTasks">
    <property name="text">
-    <string>E&amp;xport Source URLs</string>
+    <string>E&amp;xport Tasks</string>
    </property>
    <property name="toolTip">
     <string>Export Source URLs</string>
@@ -151,7 +151,10 @@
   </action>
   <action name="actionGenScriptAria2c">
    <property name="text">
-    <string>Generate script for aria2c</string>
+    <string>Get script for aria2c</string>
+   </property>
+   <property name="toolTip">
+    <string>Get script for aria2c</string>
    </property>
   </action>
  </widget>
