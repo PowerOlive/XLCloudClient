@@ -80,6 +80,9 @@ MainWindow::MainWindow(QWidget *parent) :
         restoreGeometry( settings.value("Geometry").toByteArray() );
     }
 
+    /// @todo dirty hack!
+    tpanel->my_cookiePath = tcore->getCookieFilePath();
+
     login ();
 }
 
@@ -344,15 +347,15 @@ void MainWindow::on_actionExportTasks_triggered()
     bool ok = Util::writeFile(file, data);
     if (ok)
     {
-        QMessageBox::information(this, tr("Task exported successfully"),
+        QMessageBox::information(this, tr("URL source address exported successfully"),
                                  tr("Exported %1 urls.").arg(cloudTasks.size()),
                                  QMessageBox::Ok);
     }
     else
     {
         QMessageBox::warning(this,
-                             tr("Can't export task list"),
-                             tr("Something's wrong with the file you chosen."),
+                             tr("Can't export task source list"),
+                             tr("Something's wrong with the file you chose."),
                              QMessageBox::Ok);
     }
 }
@@ -368,4 +371,44 @@ void MainWindow::on_actionCleanupHistory_triggered()
 void MainWindow::on_actionReloadTasks_triggered()
 {
     tcore->reloadCloudTasks();
+}
+
+void MainWindow::on_actionGenScriptAria2c_triggered()
+{
+    const QList<Thunder::Task> & cloudTasks = tcore->getCloudTasks();
+    if (cloudTasks.isEmpty()) return;
+
+    const QString & file =
+            QFileDialog::getSaveFileName(this,
+                                         tr("Save aria2c script to"),
+                                         Util::getHomeLocation(),
+                                         tr("Bourne Shell Script (*.sh);;All Files(*.*)"));
+    if (file.isEmpty()) return;
+
+    QByteArray data = "#!/bin/bash\r\n\r\n";
+    foreach (const Thunder::Task & task, cloudTasks)
+    {
+        if (task.link.isEmpty())
+            continue;
+
+        data.append(QString ("aria2c --load-cookies '%1' -o '%3' '%2'\r\n\r\n")
+                    .arg(tcore->getCookieFilePath())
+                    .arg(task.name)
+                    .arg(task.link).toUtf8());
+    }
+
+    bool ok = Util::writeFile(file, data);
+    if (ok)
+    {
+        QMessageBox::information(this, tr("Script generated successfully"),
+                                 tr("Exported %1 tasks.").arg(cloudTasks.size()),
+                                 QMessageBox::Ok);
+    }
+    else
+    {
+        QMessageBox::warning(this,
+                             tr("Can't write script"),
+                             tr("Something's wrong with the location you chose."),
+                             QMessageBox::Ok);
+    }
 }

@@ -536,6 +536,11 @@ Thunder::BitorrentTask ThunderCore::getUploadedBTTasks()
     return tmp_btTask;
 }
 
+QString ThunderCore::getCookieFilePath()
+{
+    return Util::getHomeLocation() + "/.tdcookie";
+}
+
 void ThunderCore::parseCloudPage(const QByteArray &body)
 {
     /// CACHE TASK IDS for automatic task renewal
@@ -587,11 +592,11 @@ void ThunderCore::parseCloudPage(const QByteArray &body)
             tmp_cookieIsStored = true;
             tc_session.insert("gdriveid", user_info.value("cookie").toString());
 
-            Util::writeFile(Util::getHomeLocation() + "/.tdcookie",
+            Util::writeFile(getCookieFilePath(),
                                 ".vip.xunlei.com\tTRUE\t/\tFALSE\t90147186842\tgdriveid\t" +
                             tc_session.value("gdriveid").toAscii() + "\n");
 
-//            Util::writeCookieToFile(Util::getHomeLocation() + "/.tdcookie",
+//            Util::writeCookieToFile(getCookieFilePath(),
 //                                    tc_nam->cookieJar()->cookiesForUrl(
 //                                        QUrl("http://gdl.lixian.vip.xunlei.com")));
 

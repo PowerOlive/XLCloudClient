@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>625</width>
-    <height>337</height>
+    <width>623</width>
+    <height>335</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -32,8 +32,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>625</width>
-     <height>22</height>
+     <width>623</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -41,7 +41,9 @@
      <string>F&amp;ile</string>
     </property>
     <addaction name="actionNewTask"/>
+    <addaction name="separator"/>
     <addaction name="actionExportTasks"/>
+    <addaction name="actionGenScriptAria2c"/>
     <addaction name="separator"/>
     <addaction name="actionQ_uit"/>
    </widget>
@@ -84,7 +86,10 @@
   </action>
   <action name="actionExportTasks">
    <property name="text">
-    <string>E&amp;xport</string>
+    <string>E&amp;xport Source URLs</string>
+   </property>
+   <property name="toolTip">
+    <string>Export Source URLs</string>
    </property>
   </action>
   <action name="actionQ_uit">
@@ -142,6 +147,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionGenScriptAria2c">
+   <property name="text">
+    <string>Generate script for aria2c</string>
    </property>
   </action>
  </widget>

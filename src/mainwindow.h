@@ -93,6 +93,7 @@ private slots:
     void on_actionReloadTasks_triggered();
 
     void slotBrowserLinksReady (const QString &urls);
+    void on_actionGenScriptAria2c_triggered();
 };
 
 #endif // MAINWINDOW_H

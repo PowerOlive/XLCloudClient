@@ -70,6 +70,9 @@ public:
     void removeSelectedTasks (const QList<int> & ids);
     Thunder::RemoteTask getFirstSelectedTask ();
 
+    /// @todo dirty fix!
+    QString my_cookiePath;
+
     void keyEvent (QKeyEvent *e);
 
 public slots:
@@ -114,6 +117,7 @@ private slots:
     void slotCopyDownloadAddress ();
     void slotCopySourceAddress ();
     void slotCopyTaskName ();
+    void slotCopyAria2cScript ();
 
     void slotResizeFirstColumnOfTreeView();
     void slotResizeAllColumnsOfTreeView();

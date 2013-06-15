@@ -94,6 +94,8 @@ public:
     LoginStatus getLoginStatus ();
     QByteArray getCapchaCode ();
 
+    QString getCookieFilePath ();
+
     QList<Thunder::Task> getCloudTasks ();
     QList<Thunder::Task> getGarbagedTasks ();
     void reloadCloudTasks ();

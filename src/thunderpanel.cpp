@@ -64,6 +64,10 @@ ThunderPanel::ThunderPanel(QWidget *parent) :
     connect (action, SIGNAL(triggered()), SLOT(slotCopyTaskName()));
     my_contextMenu->addAction(action);
 
+    action = new QAction (tr("Copy as Aria2c"), this);
+    connect (action, SIGNAL(triggered()), SLOT(slotCopyAria2cScript()));
+    my_contextMenu->addAction(action);
+
     my_contextMenu->addSeparator();
     action = new QAction (tr("Collapse all"), this);
     connect (action, SIGNAL(triggered()), ui->treeView, SLOT(collapseAll()));
@@ -157,6 +161,19 @@ void ThunderPanel::slotDownloadThisTask()
     const QString & url = getUserDataByOffset(OFFSET_DOWNLOAD);
     if (url.isEmpty()) return;
     emit doThisLink(getFirstSelectedTask(), Download, false);
+}
+
+void ThunderPanel::slotCopyAria2cScript()
+{
+    const QString & name = getUserDataByOffset(0);
+    const QString & link = getUserDataByOffset(OFFSET_DOWNLOAD);
+    if (name.isEmpty() || link.isEmpty()) return;
+
+    QApplication::clipboard()->setText(QString("aria2c --load-cookies '%1' '%2' -o '%3'")
+                                       .arg(my_cookiePath)
+                                       .arg(link)
+                                       .arg(name)
+                                       );
 }
 
 void ThunderPanel::slotCopyTaskName()
