@@ -312,6 +312,9 @@ void ThunderPanel::setBTSubTask(const Thunder::BitorrentTask &task)
         for (int i = 0; i < items.size(); ++i)
             items.at(i)->setTextAlignment(Qt::AlignCenter);
 
+        if (subtask.link.isEmpty())
+            items.at(1)->setBackground(QBrush (QColor("#9CC6EE")));
+
         my_BTSubTaskMapping.value(task.taskid)->appendRow(items);
     }
 }
