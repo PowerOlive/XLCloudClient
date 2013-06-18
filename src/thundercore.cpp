@@ -91,10 +91,10 @@ void ThunderCore::cleanupHistory()
 
 void ThunderCore::commitBitorrentTask(const QList<Thunder::BTSubTask> &tasks)
 {
-    QString ids, sizes;
+    QString indices, sizes;
     foreach (const Thunder::BTSubTask & task, tasks)
     {
-        ids.append(task.id).append("_");
+        indices.append(task.findex).append("_");
         sizes.append(task.size).append("_");
     }
 
@@ -102,7 +102,7 @@ void ThunderCore::commitBitorrentTask(const QList<Thunder::BTSubTask> &tasks)
                "interface/bt_task_commit?callback=a&t=" +
                QDateTime::currentDateTime().toString().toAscii().toPercentEncoding()),
           "goldbean=0&class_id=0&o_taskid=0&o_page=task&silverbean=0"
-          "&findex=" + ids.toAscii() +
+          "&findex=" + indices.toAscii() +
           "&uid=" + tc_session.value("userid").toAscii() +
           "&btname=" + tmp_btTask.ftitle.toUtf8().toPercentEncoding() +
           "&tsize=" + QByteArray::number(tmp_btTask.btsize) +
@@ -357,6 +357,7 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
             task.format_size = map.value("subformatsize").toString();
             task.size = map.value("subsize").toString();
             task.id = map.value("id").toString();
+            task.findex = map.value("findex").toString();
 
             tmp_btTask.subtasks.append(task);
         }
@@ -593,12 +594,12 @@ void ThunderCore::parseCloudPage(const QByteArray &body)
             tc_session.insert("gdriveid", user_info.value("cookie").toString());
 
             Util::writeFile(getCookieFilePath(),
-                                ".vip.xunlei.com\tTRUE\t/\tFALSE\t90147186842\tgdriveid\t" +
+                            ".vip.xunlei.com\tTRUE\t/\tFALSE\t90147186842\tgdriveid\t" +
                             tc_session.value("gdriveid").toAscii() + "\n");
 
-//            Util::writeCookieToFile(getCookieFilePath(),
-//                                    tc_nam->cookieJar()->cookiesForUrl(
-//                                        QUrl("http://gdl.lixian.vip.xunlei.com")));
+            //            Util::writeCookieToFile(getCookieFilePath(),
+            //                                    tc_nam->cookieJar()->cookiesForUrl(
+            //                                        QUrl("http://gdl.lixian.vip.xunlei.com")));
 
         }
 

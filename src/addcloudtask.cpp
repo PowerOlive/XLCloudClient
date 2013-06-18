@@ -22,6 +22,7 @@
 #define OFFSET_SUBID 1
 #define OFFSET_SIZE 2
 #define OFFSET_URL 3
+#define OFFSET_FINDEX 3
 
 AddCloudTask::AddCloudTask(ThunderCore *tc, QWidget *parent) :
     QDialog(parent),
@@ -109,6 +110,7 @@ void AddCloudTask::slotRemoteTaskChanged(ThunderCore::RemoteTaskType type)
 
             items.first()->setData(task.id, Qt::UserRole + OFFSET_SUBID);
             items.first()->setData(task.size, Qt::UserRole + OFFSET_SIZE);
+            items.first()->setData(task.findex, Qt::UserRole + OFFSET_FINDEX);
 
             bt_model->appendRow(items);
         }
@@ -176,8 +178,9 @@ void AddCloudTask::on_buttonBox_accepted()
             if (index.column() == 0)
             {
                 Thunder::BTSubTask task;
-                task.id = QString::number(index.row());
-                task.size = bt_model->data(index, Qt::UserRole + OFFSET_SIZE).toString();
+                task.id     = QString::number(index.row());
+                task.findex = bt_model->data(index, Qt::UserRole + OFFSET_FINDEX).toString();
+                task.size   = bt_model->data(index, Qt::UserRole + OFFSET_SIZE).toString();
 
                 tasks.append(task);
             }
