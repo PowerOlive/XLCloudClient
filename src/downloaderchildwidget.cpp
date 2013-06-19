@@ -182,8 +182,7 @@ void DownloaderChildWidget::paintEvent(QPaintEvent *)
 void DownloaderChildWidget::on_openFileLabel_linkActivated(const QString &link)
 {
     Q_UNUSED (link);
-    QDesktopServices::openUrl(
-                QUrl::fromLocalFile(m_folderName + QDir::separator() + m_fileName));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(m_Downloader.getSaveFilePath()));
 }
 
 void DownloaderChildWidget::on_openFolderLabel_linkActivated(const QString &link)

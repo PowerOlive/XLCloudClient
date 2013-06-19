@@ -56,6 +56,7 @@ public:
     void cancelAndRemove ();
 
     unsigned long long getFileSize () { return file_size; }
+    QString getSaveFilePath () { return absolutePath; }
 
     bool running;
     bool requestShutdown;
