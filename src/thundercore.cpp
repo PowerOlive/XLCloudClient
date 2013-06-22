@@ -422,9 +422,11 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
         int btnum = resultMap.value("btnum").toInt();
         int btpernum = resultMap.value("btpernum").toInt();
 
+//        qDebug() << btnum << now_page << btpernum;
+
         if (btpernum != 0)
         {
-            if (now_page < btnum / btpernum)
+            if (now_page < btnum / btpernum + 1)
             {
                 /// dirty hack: repicate current request!
                 QNetworkRequest request = reply->request();
