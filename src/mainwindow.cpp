@@ -385,13 +385,13 @@ void MainWindow::on_actionGenScriptAria2c_triggered()
                                          tr("Bourne Shell Script (*.sh);;All Files(*.*)"));
     if (file.isEmpty()) return;
 
-    QByteArray data = "#!/bin/bash\r\n\r\n";
+    QByteArray data = "#!/bin/bash\n";
     foreach (const Thunder::Task & task, cloudTasks)
     {
         if (task.link.isEmpty())
             continue;
 
-        data.append(QString ("aria2c --load-cookies '%1' -o '%3' '%2'\r\n\r\n")
+        data.append(QString ("aria2c --load-cookies '%1' -o '%2' '%3'\n")
                     .arg(tcore->getCookieFilePath())
                     .arg(task.name)
                     .arg(task.link).toUtf8());
