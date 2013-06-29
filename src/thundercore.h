@@ -95,6 +95,7 @@ public:
     QByteArray getCapchaCode ();
 
     QString getCookieFilePath ();
+    QString getgdriveid ();
 
     QList<Thunder::Task> getCloudTasks ();
     QList<Thunder::Task> getGarbagedTasks ();
@@ -115,6 +116,7 @@ public:
     Thunder::BitorrentTask getUploadedBTTasks();
     QList<Thunder::BatchTask> getUploadedBatchTasks ();
 
+    void fetchHistoryData ();
     void cleanupHistory ();
 
     void loginWithCapcha (const QByteArray & capcha);
@@ -141,6 +143,12 @@ signals:
     void RemoteTaskChanged (ThunderCore::RemoteTaskType rt);
 
     void BTSubTaskReady (const Thunder::BitorrentTask & task);
+
+    /*!
+     * \brief Send cookies to tpanel (for aria2c script)
+     * \param tdcookie
+     */
+    void CookiesReady (const QString & tdcookie);
 
 private:
     QList<Thunder::Task> tc_cloudTasks, tc_garbagedTasks;

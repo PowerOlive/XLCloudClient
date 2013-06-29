@@ -163,6 +163,11 @@ void ThunderPanel::slotDownloadThisTask()
     emit doThisLink(getFirstSelectedTask(), Download, false);
 }
 
+void ThunderPanel::slotCookiesReady(const QString &gdriveid)
+{
+    my_gdriveid = gdriveid;
+}
+
 void ThunderPanel::slotCopyAria2cScript()
 {
     /// No bad case seen yet, escaping single quote seems necessary
@@ -170,8 +175,10 @@ void ThunderPanel::slotCopyAria2cScript()
     QString link = getUserDataByOffset(OFFSET_DOWNLOAD);
     if (name.isEmpty() || link.isEmpty()) return;
 
-    QApplication::clipboard()->setText(QString("aria2c --load-cookies '%1' '%2' -o '%3'")
-                                       .arg(my_cookiePath)
+    QApplication::clipboard()->setText(QString("aria2c -c "
+                                               "--header='Cookies: gdriveid=%1'"
+                                               " '%2' -o '%3'")
+                                       .arg(my_gdriveid)
                                        .arg(link.replace("'", "\\'"))
                                        .arg(name.replace("'", "\\'"))
                                        );

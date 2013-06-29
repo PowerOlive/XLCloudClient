@@ -50,6 +50,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect (tcore, SIGNAL(BTSubTaskReady(Thunder::BitorrentTask)),
              tpanel, SLOT(setBTSubTask(Thunder::BitorrentTask)));
 
+    connect (tcore, SIGNAL(CookiesReady(QString)),
+             tpanel, SLOT(slotCookiesReady(QString)));
+
     connect (tpanel, SIGNAL(doThisLink(Thunder::RemoteTask,
                                        ThunderPanel::RequestType,bool)),
              SLOT(slotRequestReceived(Thunder::RemoteTask,
@@ -79,9 +82,6 @@ MainWindow::MainWindow(QWidget *parent) :
         restoreState( settings.value("State").toByteArray());
         restoreGeometry( settings.value("Geometry").toByteArray() );
     }
-
-    /// @todo dirty hack!
-    tpanel->my_cookiePath = tcore->getCookieFilePath();
 
     login ();
 }
@@ -391,8 +391,8 @@ void MainWindow::on_actionGenScriptAria2c_triggered()
         if (task.link.isEmpty())
             continue;
 
-        data.append(QString ("aria2c --load-cookies '%1' -o '%2' '%3'\n")
-                    .arg(tcore->getCookieFilePath())
+        data.append(QString ("aria2c -c --header='Cookies: gdriveid=%1' -o '%2' '%3'\n")
+                    .arg(tcore->getgdriveid())
                     .arg(task.name)
                     .arg(task.link).toUtf8());
     }

@@ -89,6 +89,16 @@ void ThunderCore::cleanupHistory()
     get (url);
 }
 
+void ThunderCore::fetchHistoryData()
+{
+    QUrl url ("http://dynamic.cloud.vip.xunlei.com/user_history");
+    url.addQueryItem("userid", tc_session.value("userid"));
+    url.addQueryItem("cache", QDateTime::currentDateTime()
+                     .toString("ddd MMM dd yyyy hh:mm:ss"));
+
+    get (url);
+}
+
 void ThunderCore::commitBitorrentTask(const QList<Thunder::BTSubTask> &tasks)
 {
     QString indices, sizes;
@@ -157,6 +167,8 @@ void ThunderCore::reloadCloudTasks()
               "callback=tc&t="
               "&type_id=4&page=1&tasknum=500"
               "&p=1&interfrom=task"));
+
+//    fetchHistoryData();
 }
 
 void ThunderCore::addCloudTaskPre(const QString &url)
@@ -378,6 +390,15 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
         return;
     }
 
+    if (urlStr.startsWith("http://dynamic.cloud.vip.xunlei.com/user_history"))
+    {
+        error(tr("History data acquired, parsing .."), Notice);
+
+        qDebug() << data;
+
+        return;
+    }
+
     if (urlStr.startsWith("http://dynamic.cloud.vip.xunlei.com/interface/history_clear"))
     {
         error(tr("History emptied"), Notice);
@@ -544,6 +565,11 @@ QString ThunderCore::getCookieFilePath()
     return Util::getHomeLocation() + "/.tdcookie";
 }
 
+QString ThunderCore::getgdriveid()
+{
+    return tc_session.value("gdriveid");
+}
+
 void ThunderCore::parseCloudPage(const QByteArray &body)
 {
     /// CACHE TASK IDS for automatic task renewal
@@ -592,8 +618,11 @@ void ThunderCore::parseCloudPage(const QByteArray &body)
 
         if (! tmp_cookieIsStored)
         {
+            const QString & gdriveidCookie = user_info.value("cookie").toString();
+
             tmp_cookieIsStored = true;
-            tc_session.insert("gdriveid", user_info.value("cookie").toString());
+            tc_session.insert("gdriveid", gdriveidCookie);
+            emit CookiesReady (gdriveidCookie);
 
             Util::writeFile(getCookieFilePath(),
                             ".vip.xunlei.com\tTRUE\t/\tFALSE\t90147186842\tgdriveid\t" +

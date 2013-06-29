@@ -70,9 +70,6 @@ public:
     void removeSelectedTasks (const QList<int> & ids);
     Thunder::RemoteTask getFirstSelectedTask ();
 
-    /// @todo dirty fix!
-    QString my_cookiePath;
-
     void keyEvent (QKeyEvent *e);
 
 public slots:
@@ -87,6 +84,7 @@ signals:
 private:
     Ui::ThunderPanel *ui;
     bool my_quickViewMode;
+    QString my_gdriveid;
 
     /*!
      * \brief Mapping between task id and sub tasks of a BT task
@@ -108,6 +106,7 @@ private:
 
 private slots:
     void slotShowContextMenu (const QPoint & pt);
+    void slotCookiesReady (const QString & gdriveid);
 
     void slotPreviewThisTask ();
     void slotDownloadThisTask ();
