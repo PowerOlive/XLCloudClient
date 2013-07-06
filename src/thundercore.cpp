@@ -17,6 +17,7 @@
  */
 
 #include "thundercore.h"
+#define TASKS_PER_PAGE 30
 
 ThunderCore::ThunderCore(QObject *parent) :
     QObject(parent),
@@ -160,15 +161,22 @@ void ThunderCore::setCapcha(const QString &code)
     loginWithCapcha(code.toAscii());
 }
 
-void ThunderCore::reloadCloudTasks()
+void ThunderCore::reloadCloudTasks(const int page)
 {
-    /// Never play with callback parameter!
-    get (QUrl("http://dynamic.cloud.vip.xunlei.com/interface/showtask_unfresh?"
-              "callback=tc&t="
-              "&type_id=4&page=1&tasknum=500"
-              "&p=1&interfrom=task"));
+    /// Set new timestamp on newly created requests
+    if (page == 1)
+        tc_timeStampForCloudTasks = QDateTime::currentDateTime().toString();
 
-//    fetchHistoryData();
+    /// Never play with callback parameter!
+    QUrl url = QUrl::fromEncoded("http://dynamic.cloud.vip.xunlei.com/interface/showtask_unfresh?"
+                                 "callback=tc&type_id=4&interfrom=task");
+    url.addQueryItem("tasknum", QString::number(TASKS_PER_PAGE));
+    url.addQueryItem("page", QString::number(page));
+    url.addQueryItem("t", tc_timeStampForCloudTasks);
+
+    get (url);
+
+    //    fetchHistoryData();
 }
 
 void ThunderCore::addCloudTaskPre(const QString &url)
@@ -273,7 +281,7 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
     if (urlStr.startsWith("http://dynamic.cloud.vip.xunlei.com/interface/showtask_unfresh"))
     {
         error (tr("Parsing task data .."), Info);
-        parseCloudPage(data);
+        parseCloudPage(data, url.queryItemValue("page").toInt(), url.queryItemValue("t"));
 
         return;
     }
@@ -443,7 +451,7 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
         int btnum = resultMap.value("btnum").toInt();
         int btpernum = resultMap.value("btpernum").toInt();
 
-//        qDebug() << btnum << now_page << btpernum;
+        //        qDebug() << btnum << now_page << btpernum;
 
         if (btpernum != 0)
         {
@@ -570,14 +578,21 @@ QString ThunderCore::getgdriveid()
     return tc_session.value("gdriveid");
 }
 
-void ThunderCore::parseCloudPage(const QByteArray &body)
+void ThunderCore::parseCloudPage(const QByteArray &body, int pageNo, const QString & timestamp)
 {
+    /// Rejectes extensive task refreshes
+    if (timestamp != tc_timeStampForCloudTasks)
+    {
+        return;
+    }
+
     /// CACHE TASK IDS for automatic task renewal
     QStringList local_taskids;
 
     QVariantMap json_map, json_info, user_info;
     QJson::Parser parser;
     bool ok = false;
+    int total_task_num = 0;
 
     QByteArray json = body; json.chop(1); json.remove(0, 3);
     QVariant result = parser.parse(json, &ok);
@@ -590,6 +605,7 @@ void ThunderCore::parseCloudPage(const QByteArray &body)
         goto error;
 
     json_info = json_map.value("info").toMap();
+    total_task_num = json_info.value("total_num").toInt();
     if (! json_info.contains("tasks"))
         goto error;
 
@@ -598,7 +614,8 @@ void ThunderCore::parseCloudPage(const QByteArray &body)
         goto error;
 
     /// LOAD TASKS
-    tc_cloudTasks.clear();
+    if (pageNo == 1)
+        tc_cloudTasks.clear();
 
     foreach (const QVariant & taskItem, json_info.value("tasks").toList())
     {
@@ -647,7 +664,13 @@ void ThunderCore::parseCloudPage(const QByteArray &body)
     /// MAGIC!
     delayCloudTask(local_taskids);
 
-    error (tr("%1 task(s) loaded.").arg(tc_cloudTasks.size()), Notice);
+    /// No re-assembling magics! crap
+    if (tc_cloudTasks.size() != total_task_num)
+    {
+        reloadCloudTasks (pageNo + 1);
+    }
+
+    error (tr("%1 task(s) loaded. (Page %2)").arg(tc_cloudTasks.size()).arg(pageNo), Notice);
     emit StatusChanged(TaskChanged);
 
     return;

@@ -99,7 +99,7 @@ public:
 
     QList<Thunder::Task> getCloudTasks ();
     QList<Thunder::Task> getGarbagedTasks ();
-    void reloadCloudTasks ();
+    void reloadCloudTasks (const int page = 1);
     void addCloudTaskPre (const QString & url);
     void addCloudTaskPost (const Thunder::RemoteTask & task);
     void removeCloudTasks (const QStringList & ids);
@@ -152,7 +152,7 @@ signals:
 
 private:
     QList<Thunder::Task> tc_cloudTasks, tc_garbagedTasks;
-    void parseCloudPage (const QByteArray & body);
+    void parseCloudPage (const QByteArray & body, int pageNo, const QString &timestamp);
     void parseCloudTaskData (const QByteArray & jsonp);
     bool tmp_cookieIsStored;
 
@@ -165,6 +165,8 @@ private:
     QHash<QString, QString> tc_session;
     LoginStatus tc_loginStatus;
     QByteArray tc_capcha;
+
+    QString tc_timeStampForCloudTasks;
     
     QNetworkAccessManager *tc_nam;
     void get (const QUrl & url);
