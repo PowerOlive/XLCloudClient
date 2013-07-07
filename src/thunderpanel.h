@@ -21,6 +21,7 @@
 
 #include <QWidget>
 #include <QStandardItemModel>
+#include <QSettings>
 #include <QMenu>
 #include <QHash>
 #include <QAction>
@@ -57,6 +58,13 @@ public:
         AddTask
     };
 
+    enum DisplayFilterMode
+    {
+        FilterWithRegex         = 0,
+        FilterWithWildcard      = 1,
+        FilterWithFixedString   = 2
+    };
+
     explicit ThunderPanel(QWidget *parent = 0);
     ~ThunderPanel();
 
@@ -74,7 +82,8 @@ public:
 
 public slots:
     void setBTSubTask (const Thunder::BitorrentTask & task);
-    
+    void loadSettings ();
+
 signals:
     void doThisLink (const Thunder::RemoteTask & task,
                      ThunderPanel::RequestType type,
@@ -93,6 +102,7 @@ private:
 
     QSortFilterProxyModel *my_filterModel;
     QStandardItemModel *my_model;
+    DisplayFilterMode  displayFilterMode;
 
     /*!
      * \brief getUserDataByOffset
@@ -123,6 +133,7 @@ private slots:
 
     void on_treeView_doubleClicked(const QModelIndex &index);
     void on_filter_textChanged(const QString &arg1);
+    void on_toolButton_clicked();
 };
 
 #endif // THUNDERPANEL_H

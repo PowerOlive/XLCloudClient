@@ -291,6 +291,8 @@ void MainWindow::slotSettingsChanged ()
     // BUG:   signal emitted prior to settings storage
     // Trick: delayed function calls
     QTimer::singleShot(1000, this, SLOT(login()));
+
+    QTimer::singleShot(1000, tpanel, SLOT(loadSettings()));
 }
 
 void MainWindow::on_actionPreferences_triggered()

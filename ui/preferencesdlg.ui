@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>772</width>
-    <height>469</height>
+    <width>770</width>
+    <height>467</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -135,6 +135,13 @@
           <string>Misc</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_5">
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Tasks per page:</string>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="1">
            <widget class="QSpinBox" name="tasksPerPage">
             <property name="maximum">
@@ -145,18 +152,37 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Tasks per page:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
+          <item row="3" column="0">
            <widget class="QCheckBox" name="quickPreviewMode">
             <property name="text">
              <string>Quick Preview Mode</string>
             </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_13">
+            <property name="text">
+             <string>Display filter mode:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="taskDisplayFilterMode">
+            <item>
+             <property name="text">
+              <string>Regular Expression</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Wildcard Mode</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Fixed String</string>
+             </property>
+            </item>
            </widget>
           </item>
          </layout>

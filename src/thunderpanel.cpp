@@ -30,6 +30,7 @@ ThunderPanel::ThunderPanel(QWidget *parent) :
     my_quickViewMode(true),
     my_filterModel(new QSortFilterProxyModel),
     my_model(new QStandardItemModel),
+    displayFilterMode(ThunderPanel::FilterWithRegex),
     my_contextMenu(new QMenu(this))
 {
     ui->setupUi(this);
@@ -88,10 +89,14 @@ ThunderPanel::ThunderPanel(QWidget *parent) :
                                         << tr("Size")
                                         << tr("Name"));
     my_filterModel->setSourceModel(my_model);
+    my_filterModel->setFilterKeyColumn(1);
+    my_filterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
-    ui->treeView->setModel(my_model);
+    ui->treeView->setModel(my_filterModel);
     ui->treeView->resizeColumnToContents(0);
     connect (ui->treeView, SIGNAL(expanded(QModelIndex)), SLOT(slotResizeFirstColumnOfTreeView()));
+
+    loadSettings();
 }
 
 ThunderPanel::~ThunderPanel()
@@ -123,6 +128,7 @@ void ThunderPanel::keyEvent(QKeyEvent *e)
         switch (e->key())
         {
         case Qt::Key_F:
+            ui->filter->setFocus();
             if (ui->filterPanel->isVisible())
             {
                 ui->filter->selectAll();
@@ -130,7 +136,6 @@ void ThunderPanel::keyEvent(QKeyEvent *e)
             else
             {
                 ui->filterPanel->show();
-                ui->filter->setFocus();
             }
             break;
         }
@@ -215,19 +220,22 @@ Thunder::RemoteTask ThunderPanel::getFirstSelectedTask ()
     if (! currentIdx.parent().isValid())
     {
         int row = ui->treeView->currentIndex().row();
-        idx = my_model->index(row, 0);
-        idx2 = my_model->index(row, 1);
+        idx  = my_filterModel->index(row, 0);
+        idx2 = my_filterModel->index(row, 1);
     }
     // child item
     else
     {
-        idx = currentIdx.parent().child(currentIdx.row(), 0);
+        idx  = currentIdx.parent().child(currentIdx.row(), 0);
         idx2 = currentIdx.parent().child(currentIdx.row(), 1);
     }
 
     if (idx.isValid())
     {
-        task.url = my_model->data(idx, Qt::UserRole + OFFSET_DOWNLOAD).toString();
+        idx  = my_filterModel->mapToSource(idx);
+        idx2 = my_filterModel->mapToSource(idx2);
+
+        task.url  = my_model->data(idx, Qt::UserRole + OFFSET_DOWNLOAD).toString();
         task.name = my_model->data(idx2).toString();
     }
 
@@ -245,15 +253,19 @@ QString ThunderPanel::getUserDataByOffset (unsigned long long offset, int row)
     if (! currentIndex.parent().isValid())
     {
         if (row == -1) row = currentIndex.row();
-        const QModelIndex & idx = my_model->index(row, (offset == 0) ? 1 : 0);
+        QModelIndex idx = my_filterModel->index(row, (offset == 0) ? 1 : 0);
+        idx = my_filterModel->mapToSource(idx);
+
         if (idx.isValid())
             return my_model->data(idx, role).toString();
     }
 
     else
     {
-        const QModelIndex & idx = currentIndex.parent().child(
+        QModelIndex idx = currentIndex.parent().child(
                     currentIndex.row(), (offset == 0) ? 1 : 0);
+        idx = my_filterModel->mapToSource(idx);
+
         if (idx.isValid())
             return my_model->data(idx, role).toString();
     }
@@ -388,7 +400,33 @@ void ThunderPanel::on_treeView_doubleClicked(const QModelIndex &index)
 
 }
 
+void ThunderPanel::loadSettings()
+{
+    QSettings settings;
+    settings.beginGroup("General");
+    displayFilterMode = (DisplayFilterMode) settings.value("DisplayFilterMode", 0).toInt();
+}
+
 void ThunderPanel::on_filter_textChanged(const QString &arg1)
 {
-    my_filterModel->setFilterRegExp(arg1);
+    switch (displayFilterMode)
+    {
+    case FilterWithRegex:
+         my_filterModel->setFilterRegExp(arg1);
+         break;
+    case FilterWithWildcard:
+         my_filterModel->setFilterWildcard(arg1);
+         break;
+    case FilterWithFixedString:
+         my_filterModel->setFilterFixedString(arg1);
+         break;
+    default:
+        Q_ASSERT(false);
+        break;
+    }
+}
+
+void ThunderPanel::on_toolButton_clicked()
+{
+    ui->filter->clear();
 }

@@ -32,6 +32,10 @@ PreferencesDlg::PreferencesDlg(QWidget *parent) :
     ui->credential->setText(settings.value("Credential").toString());
     ui->quickPreviewMode->setChecked(settings.value("QuickViewMode").toBool());
 
+    int displayFilterMode = settings.value("DisplayFilterMode", 0).toInt();
+    if (ui->taskDisplayFilterMode->count() > displayFilterMode)
+        ui->taskDisplayFilterMode->setCurrentIndex(displayFilterMode);
+
     // dirty fix!
     tmp_lastCred = ui->credential->text();
     settings.endGroup();
@@ -71,6 +75,7 @@ void PreferencesDlg::on_buttonBox_accepted()
     settings.setValue("Index", ui->tabWidget->currentIndex());
     settings.setValue("User", ui->user->text());
     settings.setValue("QuickViewMode", ui->quickPreviewMode->isChecked());
+    settings.setValue("DisplayFilterMode", ui->taskDisplayFilterMode->currentIndex());
 
     if (ui->credential->text() != tmp_lastCred)
         settings.setValue("Credential", Util::getMD5Hex(ui->credential->text()));

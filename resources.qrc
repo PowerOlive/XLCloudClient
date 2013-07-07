@@ -64,5 +64,6 @@
         <file>resources/images/defaulticon.png</file>
         <file>resources/images/draw-eraser.png</file>
         <file>resources/images/help-about.png</file>
+        <file>resources/images/edit-clear-locationbar-rtl.png</file>
     </qresource>
 </RCC>
