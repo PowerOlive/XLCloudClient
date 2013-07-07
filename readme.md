@@ -25,7 +25,10 @@
 ## 截图:
 
 目前BT任务可以添加，而且你可以同时查看所有的BT任务，这一点官方是没有实现的：
+
 **注意： 从 0.50 开始，你可以直接把种子拽进去了**
+
+**注意： 从 0.61 开始，你可以按下CTRL + F对任务名字进行过滤了**
 
 ![Screenshot] (https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/1.png "Desktop screenshot")
 
