@@ -23,6 +23,7 @@
 #include <QSettings>
 
 #include "util.h"
+#include "config.h"
 
 namespace Ui {
 class PreferencesDlg;

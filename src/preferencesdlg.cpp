@@ -31,6 +31,9 @@ PreferencesDlg::PreferencesDlg(QWidget *parent) :
     ui->user->setText(settings.value("User").toString());
     ui->credential->setText(settings.value("Credential").toString());
     ui->quickPreviewMode->setChecked(settings.value("QuickViewMode").toBool());
+    ui->downloadScriptTemplate->setText(
+                settings.value("DownloaderScriptTemplate",
+                               TC_DEFAULT_DOWNLOAD_TEMPLATE).toString());
 
     int displayFilterMode = settings.value("DisplayFilterMode", 0).toInt();
     if (ui->taskDisplayFilterMode->count() > displayFilterMode)
@@ -76,6 +79,7 @@ void PreferencesDlg::on_buttonBox_accepted()
     settings.setValue("User", ui->user->text());
     settings.setValue("QuickViewMode", ui->quickPreviewMode->isChecked());
     settings.setValue("DisplayFilterMode", ui->taskDisplayFilterMode->currentIndex());
+    settings.setValue("DownloaderScriptTemplate", ui->downloadScriptTemplate->text());
 
     if (ui->credential->text() != tmp_lastCred)
         settings.setValue("Credential", Util::getMD5Hex(ui->credential->text()));

@@ -77,7 +77,8 @@ HEADERS  += src/mainwindow.h \
     src/urllineedit.h \
     src/searchlineedit.h \
     src/simpleeditor.h \
-    src/unifiedpage.h
+    src/unifiedpage.h \
+    src/config.h
 
 FORMS    += ui/mainwindow.ui \
     ui/thunderpanel.ui \

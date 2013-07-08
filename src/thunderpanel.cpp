@@ -65,7 +65,7 @@ ThunderPanel::ThunderPanel(QWidget *parent) :
     connect (action, SIGNAL(triggered()), SLOT(slotCopyTaskName()));
     my_contextMenu->addAction(action);
 
-    action = new QAction (tr("Copy as Aria2c"), this);
+    action = new QAction (tr("Copy as Script"), this);
     connect (action, SIGNAL(triggered()), SLOT(slotCopyAria2cScript()));
     my_contextMenu->addAction(action);
 
@@ -180,9 +180,7 @@ void ThunderPanel::slotCopyAria2cScript()
     QString link = getUserDataByOffset(OFFSET_DOWNLOAD);
     if (name.isEmpty() || link.isEmpty()) return;
 
-    QApplication::clipboard()->setText(QString("aria2c -c "
-                                               "--header='Cookies: gdriveid=%1'"
-                                               " '%2' -o '%3'")
+    QApplication::clipboard()->setText(QString(my_downloaderScriptTemplate)
                                        .arg(my_gdriveid)
                                        .arg(link.replace("'", "\\'"))
                                        .arg(name.replace("'", "\\'"))
@@ -405,6 +403,8 @@ void ThunderPanel::loadSettings()
     QSettings settings;
     settings.beginGroup("General");
     displayFilterMode = (DisplayFilterMode) settings.value("DisplayFilterMode", 0).toInt();
+    my_downloaderScriptTemplate = settings.value("DownloaderScriptTemplate",
+                                                 TC_DEFAULT_DOWNLOAD_TEMPLATE).toString();
 }
 
 void ThunderPanel::on_filter_textChanged(const QString &arg1)

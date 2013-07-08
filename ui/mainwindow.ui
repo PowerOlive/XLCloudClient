@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>623</width>
-    <height>335</height>
+    <width>619</width>
+    <height>331</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -32,7 +32,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>623</width>
+     <width>619</width>
      <height>21</height>
     </rect>
    </property>
@@ -151,10 +151,10 @@
   </action>
   <action name="actionGenScriptAria2c">
    <property name="text">
-    <string>Get script for aria2c</string>
+    <string>Get Offline Download Script</string>
    </property>
    <property name="toolTip">
-    <string>Get script for aria2c</string>
+    <string>Get Bash Script</string>
    </property>
   </action>
  </widget>

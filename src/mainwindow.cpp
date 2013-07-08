@@ -382,7 +382,7 @@ void MainWindow::on_actionGenScriptAria2c_triggered()
 
     const QString & file =
             QFileDialog::getSaveFileName(this,
-                                         tr("Save aria2c script to"),
+                                         tr("Save bash script to"),
                                          Util::getHomeLocation(),
                                          tr("Bourne Shell Script (*.sh);;All Files(*.*)"));
     if (file.isEmpty()) return;
@@ -393,10 +393,11 @@ void MainWindow::on_actionGenScriptAria2c_triggered()
         if (task.link.isEmpty())
             continue;
 
-        data.append(QString ("aria2c -c --header='Cookies: gdriveid=%1' -o '%2' '%3'\n")
+        data.append(QString (tpanel->my_downloaderScriptTemplate)
                     .arg(tcore->getgdriveid())
                     .arg(task.name)
                     .arg(task.link).toUtf8());
+        data.append("\n");
     }
 
     bool ok = Util::writeFile(file, data);

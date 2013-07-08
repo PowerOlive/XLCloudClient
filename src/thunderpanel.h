@@ -35,6 +35,7 @@
 
 #include "CloudObject.h"
 #include "util.h"
+#include "config.h"
 
 namespace Ui {
 class ThunderPanel;
@@ -67,6 +68,7 @@ public:
 
     explicit ThunderPanel(QWidget *parent = 0);
     ~ThunderPanel();
+    QString my_downloaderScriptTemplate;
 
     void resizeColumnToContents (int column);
 
