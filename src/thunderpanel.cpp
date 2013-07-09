@@ -182,8 +182,8 @@ void ThunderPanel::slotCopyAria2cScript()
 
     QApplication::clipboard()->setText(QString(my_downloaderScriptTemplate)
                                        .arg(my_gdriveid)
-                                       .arg(link.replace("'", "\\'"))
                                        .arg(name.replace("'", "\\'"))
+                                       .arg(link.replace("'", "\\'"))
                                        );
 }
 
@@ -412,14 +412,14 @@ void ThunderPanel::on_filter_textChanged(const QString &arg1)
     switch (displayFilterMode)
     {
     case FilterWithRegex:
-         my_filterModel->setFilterRegExp(arg1);
-         break;
+        my_filterModel->setFilterRegExp(arg1);
+        break;
     case FilterWithWildcard:
-         my_filterModel->setFilterWildcard(arg1);
-         break;
+        my_filterModel->setFilterWildcard(arg1);
+        break;
     case FilterWithFixedString:
-         my_filterModel->setFilterFixedString(arg1);
-         break;
+        my_filterModel->setFilterFixedString(arg1);
+        break;
     default:
         Q_ASSERT(false);
         break;
