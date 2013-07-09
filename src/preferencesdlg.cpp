@@ -43,6 +43,13 @@ PreferencesDlg::PreferencesDlg(QWidget *parent) :
     tmp_lastCred = ui->credential->text();
     settings.endGroup();
 
+    settings.beginGroup("Proxy");
+    ui->proxyEnabled->setChecked(settings.value("ProxyEnabled").toBool());
+    ui->proxyuser->setText(settings.value("User").toString());
+    ui->proxycred->setText(settings.value("Cred").toString());
+    ui->proxyserver->setText(settings.value("Server").toString());
+    settings.endGroup();
+
     settings.beginGroup("Transf0r");
     ui->storageLocation->setText(settings.value("StorageLocation", Util::getHomeLocation()).toString());
     ui->useVoiceNotification->setChecked(settings.value("UseVoiceNotification", false).toBool());
@@ -83,6 +90,13 @@ void PreferencesDlg::on_buttonBox_accepted()
 
     if (ui->credential->text() != tmp_lastCred)
         settings.setValue("Credential", Util::getMD5Hex(ui->credential->text()));
+    settings.endGroup();
+
+    settings.beginGroup("Proxy");
+    settings.setValue("ProxyEnabled", ui->proxyEnabled->isChecked());
+    settings.setValue("Server", ui->proxyserver->text());
+    settings.setValue("User", ui->proxyuser->text());
+    settings.setValue("Cred", ui->proxycred->text());
     settings.endGroup();
 
     settings.beginGroup("Transf0r");

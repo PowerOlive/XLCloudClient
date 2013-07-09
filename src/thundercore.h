@@ -24,11 +24,13 @@
 #include <QNetworkReply>
 #include <QWebElement>
 #include <QWebFrame>
+#include <QNetworkProxy>
 #include <QWebPage>
 #include <QNetworkRequest>
 #include <QNetworkCookieJar>
 #include <QDebug>
 #include <QList>
+#include <QSettings>
 #include <QDateTime>
 
 #include "qjson/parser.h"
@@ -181,7 +183,8 @@ public slots:
      * \param code
      */
     void setCapcha (const QString & code);
-    
+
+    void loadSettings ();
 };
 
 #endif // THUNDERCORE_H

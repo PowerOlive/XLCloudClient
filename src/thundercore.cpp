@@ -26,6 +26,26 @@ ThunderCore::ThunderCore(QObject *parent) :
 {
     connect (tc_nam, SIGNAL(finished(QNetworkReply*)),
              SLOT(slotFinished(QNetworkReply*)));
+
+    loadSettings();
+}
+
+void ThunderCore::loadSettings()
+{
+    QSettings settings;
+    settings.beginGroup("Proxy");
+
+    if (settings.value("ProxyEnabled", false).toBool())
+    {
+        QNetworkProxy proxy;
+        proxy.setUser(settings.value("User").toString());
+        proxy.setPassword(settings.value("Cred").toString());
+        proxy.setHostName(settings.value("Server").toString());
+
+        error (tr("Proxy %1 is enabled.").arg(proxy.hostName()), Info);
+        tc_nam->setProxy(proxy);
+    }
+
 }
 
 QList<Thunder::Task> ThunderCore::getCloudTasks()

@@ -288,11 +288,14 @@ void MainWindow::on_actionAboutAuthor_triggered()
 
 void MainWindow::slotSettingsChanged ()
 {
+    /// @todo signal bridges
     // BUG:   signal emitted prior to settings storage
     // Trick: delayed function calls
     QTimer::singleShot(1000, this, SLOT(login()));
 
     QTimer::singleShot(1000, tpanel, SLOT(loadSettings()));
+
+    QTimer::singleShot(1000, tcore, SLOT(loadSettings()));
 }
 
 void MainWindow::on_actionPreferences_triggered()
@@ -387,7 +390,7 @@ void MainWindow::on_actionGenScriptAria2c_triggered()
                                          tr("Bourne Shell Script (*.sh);;All Files(*.*)"));
     if (file.isEmpty()) return;
 
-    QByteArray data = "#!/bin/bash\n";
+    QByteArray data ("#!/bin/bash\n");
     foreach (const Thunder::Task & task, cloudTasks)
     {
         if (task.link.isEmpty())
