@@ -75,6 +75,7 @@ public:
     void setQuickViewMode (bool ok);
 
     void setCloudTasks (const QList<Thunder::Task> & tasks);
+    QPair<QString, int> getTasksAsScript();
 
     QPair<QStringList, QList<int> > getSelectedTaskIDsAndRows ();
     void removeSelectedTasks (const QList<int> & ids);

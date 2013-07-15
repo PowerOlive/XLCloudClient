@@ -173,6 +173,30 @@ void ThunderPanel::slotCookiesReady(const QString &gdriveid)
     my_gdriveid = gdriveid;
 }
 
+QPair<QString,int> ThunderPanel::getTasksAsScript()
+{
+    QPair<QString,int> data ("#!/bin/bash\n", 0);
+    for (int i = 0; i < my_model->rowCount(); ++i)
+    {
+        QString name = this->getUserDataByOffset(0, i);
+        QString link = this->getUserDataByOffset(OFFSET_DOWNLOAD, i);
+
+        if (link.isEmpty())
+            continue;
+
+        data.first.append(QString(my_downloaderScriptTemplate)
+                    .arg(my_gdriveid)
+                    .arg(name.replace("'", "\\'"))
+                    .arg(link.replace("'", "\\'"))
+                    );
+        data.first.append("\n");
+
+        ++ data.second;
+    }
+
+    return data;
+}
+
 void ThunderPanel::slotCopyAria2cScript()
 {
     /// No bad case seen yet, escaping single quote seems necessary

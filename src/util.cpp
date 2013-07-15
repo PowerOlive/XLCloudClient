@@ -204,11 +204,18 @@ QString Util::getEncryptedPassword(const QString &pass,
                 QCryptographicHash::Md5 ).toHex();
 }
 
-bool Util::writeFile(const QString &file, const QByteArray &data)
+bool Util::writeFile(const QString &file, const QByteArray &data, const bool executable)
 {
     QFile fp (file);
     if (fp.open(QIODevice::WriteOnly))
-        fp.write(data);
+    {
+        if (executable)
+            fp.setPermissions(QFile::ReadUser | QFile::WriteUser | QFile::ExeUser |
+                              QFile::ReadGroup | QFile::ExeGroup |
+                              QFile::ExeOther | QFile::ReadOther);
+        if (data.size() != fp.write(data))
+            return false;
+    }
 
     return fp.isOpen();
 }

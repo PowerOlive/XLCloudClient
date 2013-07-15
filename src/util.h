@@ -96,10 +96,12 @@ public:
      * \brief Write a file
      * \param file
      * \param data
+     * \param make file executable
      * \return
      */
     static bool writeFile (const QString & file,
-                           const QByteArray & data);
+                           const QByteArray & data,
+                           const bool executable = false);
 
     /*!
      * \brief Generate random alpha number string

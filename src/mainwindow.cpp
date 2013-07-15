@@ -380,9 +380,6 @@ void MainWindow::on_actionReloadTasks_triggered()
 
 void MainWindow::on_actionGenScriptAria2c_triggered()
 {
-    const QList<Thunder::Task> & cloudTasks = tcore->getCloudTasks();
-    if (cloudTasks.isEmpty()) return;
-
     const QString & file =
             QFileDialog::getSaveFileName(this,
                                          tr("Save bash script to"),
@@ -390,24 +387,16 @@ void MainWindow::on_actionGenScriptAria2c_triggered()
                                          tr("Bourne Shell Script (*.sh);;All Files(*.*)"));
     if (file.isEmpty()) return;
 
-    QByteArray data ("#!/bin/bash\n");
-    foreach (const Thunder::Task & task, cloudTasks)
-    {
-        if (task.link.isEmpty())
-            continue;
+    // get tasks as script
+    const QPair<QString, int> data = tpanel->getTasksAsScript();
+    if (data.second == 0) return;
 
-        data.append(QString (tpanel->my_downloaderScriptTemplate)
-                    .arg(tcore->getgdriveid())
-                    .arg(task.name)
-                    .arg(task.link).toUtf8());
-        data.append("\n");
-    }
-
-    bool ok = Util::writeFile(file, data);
+    // write file
+    bool ok = Util::writeFile(file, data.first.toUtf8(), true);
     if (ok)
     {
         QMessageBox::information(this, tr("Script generated successfully"),
-                                 tr("Exported %1 tasks.").arg(cloudTasks.size()),
+                                 tr("Exported %1 tasks.").arg(data.second),
                                  QMessageBox::Ok);
     }
     else
