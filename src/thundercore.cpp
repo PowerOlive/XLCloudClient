@@ -218,9 +218,10 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
 
     if (httpStatus < 200 || httpStatus > 400)
     {
-        error (tr("Error reading %1, got %2")
+        error (tr("Error reading %1, got %2 (Reason: %3)")
                .arg(urlStr)
-               .arg(httpStatus), Notice);
+               .arg(httpStatus)
+               .arg(reply->errorString()), Notice);
         return;
     }
     /////
