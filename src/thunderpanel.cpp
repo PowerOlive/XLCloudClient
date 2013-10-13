@@ -230,8 +230,8 @@ void ThunderPanel::slotCopyAria2cScript()
     {
         const Thunder::BitorrentTask & btTask = getBTSubTask();
 
-        QString buffer;
-        buffer.resize(btTask.subtasks.size() * 700);
+        QString buffer ("#!/bin/bash\n\n");
+        buffer.reserve(btTask.subtasks.size() * 700);
 
         foreach (const Thunder::BTSubTask & task, btTask.subtasks)
         {
@@ -246,9 +246,8 @@ void ThunderPanel::slotCopyAria2cScript()
             buffer.append("\n");
         }
 
-        if (! buffer.isEmpty())
+        if (btTask.subtasks.size() != 0)
         {
-//            buffer.prepend("#!/bin/bash\n\n");
             QApplication::clipboard()->setText (buffer);
         }
 
