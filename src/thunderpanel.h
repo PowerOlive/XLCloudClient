@@ -77,6 +77,8 @@ public:
     void setCloudTasks (const QList<Thunder::Task> & tasks);
     QPair<QString, int> getTasksAsScript();
 
+    Thunder::BitorrentTask getBTSubTask ();
+
     QPair<QStringList, QList<int> > getSelectedTaskIDsAndRows ();
     void removeSelectedTasks (const QList<int> & ids);
     Thunder::RemoteTask getFirstSelectedTask ();

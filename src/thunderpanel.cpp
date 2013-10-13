@@ -173,6 +173,28 @@ void ThunderPanel::slotCookiesReady(const QString &gdriveid)
     my_gdriveid = gdriveid;
 }
 
+Thunder::BitorrentTask ThunderPanel::getBTSubTask()
+{
+    Thunder::BitorrentTask task;
+
+    QModelIndex currentIndex = my_filterModel->mapToSource(
+                ui->treeView->currentIndex());
+
+    /// BUG: fail if child items are invisible
+    QStandardItem *currentItem = my_model->itemFromIndex(currentIndex);
+    for (int row = 0; row < currentItem->rowCount(); ++ row)
+    {
+        Thunder::BTSubTask subTask;
+        subTask.link = currentItem->child(row, 0)->data
+                (Qt::UserRole + OFFSET_DOWNLOAD).toString();
+        subTask.name = currentItem->child(row, 1)->text();
+
+        task.subtasks.append(subTask);
+    }
+
+    return task;
+}
+
 QPair<QString,int> ThunderPanel::getTasksAsScript()
 {
     QPair<QString,int> data ("#!/bin/bash\n", 0);
@@ -185,10 +207,10 @@ QPair<QString,int> ThunderPanel::getTasksAsScript()
             continue;
 
         data.first.append(QString(my_downloaderScriptTemplate)
-                    .arg(my_gdriveid)
-                    .arg(name.replace("'", "\\'"))
-                    .arg(link.replace("'", "\\'"))
-                    );
+                          .arg(my_gdriveid)
+                          .arg(name.replace("'", "\\'"))
+                          .arg(link.replace("'", "\\'"))
+                          );
         data.first.append("\n");
 
         ++ data.second;
@@ -202,7 +224,36 @@ void ThunderPanel::slotCopyAria2cScript()
     /// No bad case seen yet, escaping single quote seems necessary
     QString name = getUserDataByOffset(0);
     QString link = getUserDataByOffset(OFFSET_DOWNLOAD);
-    if (name.isEmpty() || link.isEmpty()) return;
+
+    /// Get script of all BT sub tasks
+    if (name.isEmpty() || link.isEmpty())
+    {
+        const Thunder::BitorrentTask & btTask = getBTSubTask();
+
+        QString buffer;
+        buffer.resize(btTask.subtasks.size() * 700);
+
+        foreach (const Thunder::BTSubTask & task, btTask.subtasks)
+        {
+            name = task.name;
+            link = task.link;
+
+            buffer.append(QString(my_downloaderScriptTemplate)
+                          .arg(my_gdriveid)
+                          .arg(name.replace("'", "\\'"))
+                          .arg(link.replace("'", "\\'")));
+
+            buffer.append("\n");
+        }
+
+        if (! buffer.isEmpty())
+        {
+//            buffer.prepend("#!/bin/bash\n\n");
+            QApplication::clipboard()->setText (buffer);
+        }
+
+        return;
+    }
 
     QApplication::clipboard()->setText(QString(my_downloaderScriptTemplate)
                                        .arg(my_gdriveid)
