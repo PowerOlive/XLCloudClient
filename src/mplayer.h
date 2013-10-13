@@ -48,6 +48,7 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QStatusBar>
+#include <QSettings>
 
 #include "qmpwidget.h"
 
@@ -64,6 +65,9 @@ protected:
 
 private:
     QStatusBar *m_statusBar;
+    QString m_bufferSize;
+
+    void loadSettings ();
     
 signals:
     

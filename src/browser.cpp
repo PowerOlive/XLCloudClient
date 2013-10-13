@@ -21,7 +21,8 @@
 
 Browser::Browser(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::Browser)
+    ui(new Ui::Browser),
+    m_engine (YYeTS)
 {
     ui->setupUi(this);
     ui->webView->setPage(new UnifiedPage);
@@ -91,7 +92,8 @@ void Browser::loadSettings()
 
         ui->webView->page()->networkAccessManager()->post(
                     request,
-                    "username=" + verycdAccount.toUtf8().toPercentEncoding() + "&password=" + verycdCred.toUtf8().toPercentEncoding());
+                    "username=" + verycdAccount.toUtf8().toPercentEncoding() +
+                    "&password=" + verycdCred.toUtf8().toPercentEncoding());
     }
 
     searchRegex.setPattern(
@@ -174,8 +176,8 @@ void Browser::on_webView_loadFinished(bool arg1)
     if (! m_discoveredUrls.isEmpty())
     {
         ui->linksNotification->setText(
-                    tr("  We found %1 link(s) on current page, "
-                       "click to add them  ")
+                    tr("%1 link(s) available on this page, "
+                       "Click to add them")
                     .arg(count));
         ui->addLinksWidget->show();
     }

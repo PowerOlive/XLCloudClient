@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>755</width>
-    <height>507</height>
+    <height>605</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -122,7 +122,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>Prefered storage location:</string>
+             <string>Preferred storage location:</string>
             </property>
            </widget>
           </item>

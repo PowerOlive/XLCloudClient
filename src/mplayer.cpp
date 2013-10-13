@@ -44,12 +44,27 @@
 MPlayer::MPlayer(QWidget *parent) :
     QMPwidget(parent)
 {
+    loadSettings();
+
     QMPwidget::start(QStringList()
-                     << "-cache" << "2000"
+                     << "-cache" << m_bufferSize
                      << "-cookies"
                      << "-cookies-file"
                      << QDesktopServices::storageLocation
                      (QDesktopServices::HomeLocation) + "/.tdcookie");
+}
+
+void MPlayer::loadSettings()
+{
+    QSettings settings;
+    settings.beginGroup("Video");
+
+    setMPlayerPath(settings.value("mplayerPath", "mplayer").toString());
+
+    int buffSize = settings.value("mplayerBufferSize", "2000").toInt();
+    if (buffSize <= 500)
+        buffSize = 2000;
+    m_bufferSize = QString::number(buffSize);
 }
 
 void MPlayer::keyPressEvent(QKeyEvent *event)
