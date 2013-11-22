@@ -160,6 +160,8 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
         switch (e->key())
         {
         case Qt::Key_F:
+        case Qt::Key_D:
+        case Qt::Key_C:
             tpanel->keyEvent(e);
             break;
         }

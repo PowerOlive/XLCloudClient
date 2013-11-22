@@ -47,12 +47,12 @@ ThunderPanel::ThunderPanel(QWidget *parent) :
     my_contextMenu->addSeparator();
 
     action = new QAction (QIcon(":/resources/images/user-trash.png"),
-                          tr("Remove selected tasks"), this);
+                          tr("&Remove selected tasks"), this);
     connect (action, SIGNAL(triggered()), SLOT(slotRemoveTheseTasks()));
     my_contextMenu->addAction(action);
     my_contextMenu->addSeparator();
 
-    action = new QAction (tr("Copy download address"), this);
+    action = new QAction (tr("&Copy download address"), this);
     connect (action, SIGNAL(triggered()), SLOT(slotCopyDownloadAddress()));
     my_contextMenu->addSeparator();
     my_contextMenu->addAction(action);
@@ -61,11 +61,11 @@ ThunderPanel::ThunderPanel(QWidget *parent) :
     connect (action, SIGNAL(triggered()), SLOT(slotCopySourceAddress()));
     my_contextMenu->addAction(action);
 
-    action = new QAction (tr("Copy task name"), this);
+    action = new QAction (tr("Copy &task name"), this);
     connect (action, SIGNAL(triggered()), SLOT(slotCopyTaskName()));
     my_contextMenu->addAction(action);
 
-    action = new QAction (tr("Copy as Script"), this);
+    action = new QAction (tr("Copy as &Script"), this);
     connect (action, SIGNAL(triggered()), SLOT(slotCopyAria2cScript()));
     my_contextMenu->addAction(action);
 
@@ -74,7 +74,7 @@ ThunderPanel::ThunderPanel(QWidget *parent) :
     connect (action, SIGNAL(triggered()), ui->treeView, SLOT(collapseAll()));
     my_contextMenu->addAction(action);
 
-    action = new QAction (tr("Expand all"), this);
+    action = new QAction (tr("E&xpand all"), this);
     connect (action, SIGNAL(triggered()), ui->treeView, SLOT(expandAll()));
     my_contextMenu->addAction(action);
 
@@ -137,6 +137,12 @@ void ThunderPanel::keyEvent(QKeyEvent *e)
             {
                 ui->filterPanel->show();
             }
+            break;
+        case Qt::Key_D:
+            slotRemoveTheseTasks();
+            break;
+        case Qt::Key_C:
+            slotCopyDownloadAddress();
             break;
         }
     default:
@@ -240,8 +246,8 @@ void ThunderPanel::slotCopyAria2cScript()
 
             buffer.append(QString(my_downloaderScriptTemplate)
                           .arg(my_gdriveid)
-                          .arg(name.replace("'", "\\'"))
-                          .arg(link.replace("'", "\\'")));
+                          .arg(name.replace("\"", "\\\""))
+                          .arg(link.replace("\"", "\\\"")));
 
             buffer.append("\n");
         }
@@ -256,8 +262,8 @@ void ThunderPanel::slotCopyAria2cScript()
 
     QApplication::clipboard()->setText(QString(my_downloaderScriptTemplate)
                                        .arg(my_gdriveid)
-                                       .arg(name.replace("'", "\\'"))
-                                       .arg(link.replace("'", "\\'"))
+                                       .arg(name.replace("\"", "\\\""))
+                                       .arg(link.replace("\"", "\\\""))
                                        );
 }
 
@@ -397,7 +403,7 @@ void ThunderPanel::setBTSubTask(const Thunder::BitorrentTask &task)
 
         items.first()->setIcon(Util::getFileAttr(subtask.name, false).icon);
 
-        items.first()->setData(subtask.link,   Qt::UserRole + OFFSET_DOWNLOAD);
+        items.first()->setData(subtask.link, Qt::UserRole + OFFSET_DOWNLOAD);
         //        items.first()->setData(subtask.id,     Qt::UserRole + OFFSET_TASKID);
 
         for (int i = 0; i < items.size(); ++i)

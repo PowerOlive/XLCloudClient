@@ -33,12 +33,12 @@
      <x>0</x>
      <y>0</y>
      <width>617</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
     <property name="title">
-     <string>F&amp;ile</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionNewTask"/>
     <addaction name="separator"/>
@@ -49,7 +49,7 @@
    </widget>
    <widget class="QMenu" name="menu_E">
     <property name="title">
-     <string>E&amp;dit</string>
+     <string>&amp;Edit</string>
     </property>
     <addaction name="actionCleanupHistory"/>
     <addaction name="actionReloadTasks"/>
@@ -58,7 +58,7 @@
    </widget>
    <widget class="QMenu" name="menuH_elp">
     <property name="title">
-     <string>H&amp;elp</string>
+     <string>&amp;Help</string>
     </property>
     <addaction name="actionAboutAuthor"/>
     <addaction name="separator"/>
