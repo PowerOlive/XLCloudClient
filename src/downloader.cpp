@@ -126,6 +126,14 @@ void Downloader::finishedSize ()
         if ( sfp.isOpen() )
             sfp.close();
 
+        if (! Util::createDirectory(absolutePath))
+        {
+            qDebug() << "Unable to create directory to contain " << absolutePath;
+            qDebug() << "Permission issue?";
+            running = false;
+            return;
+        }
+
         sfp.setFileName(absolutePath + LOG_SUFFIX);
         fp.setFileName(absolutePath);
 
@@ -289,13 +297,15 @@ void Downloader::saveLog()
 
     if ( ! sfp.open(QIODevice::WriteOnly) )
     {
-        qDebug() << "Unable to write to log file: " << sfp.errorString();
+        lastError = QString ("Unable to open log file: %1").arg(sfp.errorString());
+        qDebug() << lastError;
         return;
     }
 
     if ( ! sfp.write(downloadStatus) )
     {
-        qDebug() << "Incomplete log file: " << sfp.errorString();
+        lastError = QString ("Can't write log file: %1").arg(sfp.errorString());
+        qDebug() << lastError;
     }
 
     sfp.close();
@@ -328,6 +338,10 @@ void Downloader::finishedTransfer()
             status.insert( end ,  begin + readBytes.value( begin ) );
 
             downloadBuffers.remove(begin);
+        }
+        else if (reply->error() != QNetworkReply::OperationCanceledError)
+        {
+            qDebug() << "Error reading reply data: " << reply->errorString();
         }
     }
 

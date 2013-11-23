@@ -23,6 +23,7 @@
 #include <QCryptographicHash>
 #include <QDebug>
 #include <QNetworkCookie>
+#include <QDir>
 #include <QList>
 #include <QFile>
 #include <QDesktopServices>
@@ -129,6 +130,13 @@ public:
      */
     static void writeCookieToFile (const QString & fileName,
                                    const QList<QNetworkCookie> & cookies);
+
+    /*!
+     * \brief Create a directory to contain the file, prior to file transfer
+     * \param filename
+     * \return
+     */
+    static bool createDirectory (const QString & filename);
     
 signals:
     

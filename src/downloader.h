@@ -25,9 +25,11 @@
 #include <QUrl>
 #include <QFile>
 #include <QTime>
+#include <QDir>
 #include <QTimer>
 #include <QMessageBox>
 #include <QDebug>
+#include "util.h"
 
 class Downloader : public QObject
 {
@@ -62,6 +64,8 @@ public:
     bool requestShutdown;
     int downBufferSize;
 
+    QString errorString() { return errorString(); }
+
 public slots:
     void stop();
     void startDownload ( const QString & url , const QString & absolutePath);
@@ -84,6 +88,8 @@ private:
     QTimer speedTimer , logSaveTimer/* , readyReadTimer*/;
 
     unsigned long long file_size;
+
+    QString lastError;
 
 private slots:
     void saveLog ();

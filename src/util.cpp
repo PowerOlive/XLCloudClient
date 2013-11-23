@@ -28,6 +28,16 @@ QString Util::getHomeLocation()
     return QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
 }
 
+bool Util::createDirectory(const QString &filename)
+{
+    QDir dir;
+#ifdef Q_OS_WIN
+    return dir.mkpath (filename.left(filename.lastIndexOf("\\")));
+#else
+    return dir.mkpath (filename.left(filename.lastIndexOf("/")));
+#endif
+}
+
 void Util::writeCookieToFile (const QString &fileName,
                               const QList<QNetworkCookie> &cookies)
 {
