@@ -24,6 +24,26 @@
 #define OFFSET_TASKID 3
 #define OFFSET_TYPE 4
 
+// On windows only double quote is escaped
+#ifdef Q_WS_WIN
+#define SET_TASK_ATTRIB(data, name, link) do { \
+data.append(QString(my_downloaderScriptTemplate) \
+                  .arg(my_gdriveid) \
+                  .arg(name.replace("\"", "\\\"")) \
+                  .arg(link.replace("\"", "\\\"")) \
+                  ); \
+    } while (0);
+#else
+// On Linux only single quote is escaped, for the simplicity
+#define SET_TASK_ATTRIB(data, name, link) do { \
+data.append(QString(my_downloaderScriptTemplate) \
+                  .arg(my_gdriveid) \
+                  .arg(name.replace("'", "\\'")) \
+                  .arg(link.replace("'", "\\'")) \
+                  ); \
+    } while (0);
+#endif
+
 ThunderPanel::ThunderPanel(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ThunderPanel),
@@ -212,11 +232,7 @@ QPair<QString,int> ThunderPanel::getTasksAsScript()
         if (link.isEmpty())
             continue;
 
-        data.first.append(QString(my_downloaderScriptTemplate)
-                          .arg(my_gdriveid)
-                          .arg(name.replace("'", "\\'"))
-                          .arg(link.replace("'", "\\'"))
-                          );
+        SET_TASK_ATTRIB(data.first, name, link);
         data.first.append("\n");
 
         ++ data.second;
@@ -230,13 +246,14 @@ void ThunderPanel::slotCopyAria2cScript()
     /// No bad case seen yet, escaping single quote seems necessary
     QString name = getUserDataByOffset(0);
     QString link = getUserDataByOffset(OFFSET_DOWNLOAD);
+    QString buffer;
 
     /// Get script of all BT sub tasks
     if (name.isEmpty() || link.isEmpty())
     {
         const Thunder::BitorrentTask & btTask = getBTSubTask();
 
-        QString buffer ("#!/bin/bash\n\n");
+        buffer = "#!/bin/bash\n\n";
         buffer.reserve(btTask.subtasks.size() * 700);
 
         foreach (const Thunder::BTSubTask & task, btTask.subtasks)
@@ -244,11 +261,7 @@ void ThunderPanel::slotCopyAria2cScript()
             name = task.name;
             link = task.link;
 
-            buffer.append(QString(my_downloaderScriptTemplate)
-                          .arg(my_gdriveid)
-                          .arg(name.replace("\"", "\\\""))
-                          .arg(link.replace("\"", "\\\"")));
-
+            SET_TASK_ATTRIB(buffer, name, link);
             buffer.append("\n");
         }
 
@@ -260,11 +273,8 @@ void ThunderPanel::slotCopyAria2cScript()
         return;
     }
 
-    QApplication::clipboard()->setText(QString(my_downloaderScriptTemplate)
-                                       .arg(my_gdriveid)
-                                       .arg(name.replace("\"", "\\\""))
-                                       .arg(link.replace("\"", "\\\""))
-                                       );
+    SET_TASK_ATTRIB(buffer, name, link);
+    QApplication::clipboard()->setText(buffer);
 }
 
 void ThunderPanel::slotCopyTaskName()
