@@ -63,6 +63,7 @@ void Util::init()
     /// not really good design. @TODO
     static_autoOpenMapping.insert("mkv", Thunder::Video);
     static_autoOpenMapping.insert("avi", Thunder::Video);
+    static_autoOpenMapping.insert("mp4", Thunder::Video);
     static_autoOpenMapping.insert("rmvb", Thunder::Video);
     static_autoOpenMapping.insert("pdf", Thunder::Document);
     static_autoOpenMapping.insert("chm", Thunder::Document);
@@ -123,7 +124,8 @@ Thunder::AutoOpen Util::shouldAutoOpen (const QString &fileName)
     int idx = fileName.lastIndexOf(".");
     if (idx != -1)
     {
-        return static_autoOpenMapping.value(fileName.mid(idx + 1).toLower(), Thunder::Never);
+        return static_autoOpenMapping.value(fileName.mid(idx + 1).toLower(),
+                                            Thunder::Never);
     }
 
     return Thunder::Never;
@@ -237,10 +239,11 @@ Thunder::File Util::getFileAttr (const QString &fileName, bool isFolder)
     if (idx != -1)
     {
         file.extension = fileName.mid(idx + 1);
-        file.icon = QIcon (static_iconMapping.value(
-                               file.extension.toLower(),
-                               ":/resources/images/exe.png"));
     }
+
+    file.icon = QIcon (static_iconMapping.value(
+                           file.extension.toLower(),
+                           ":/resources/images/exe.png"));
 
     if (isFolder)
         file.icon = QIcon (static_iconMapping.value("folder"));
