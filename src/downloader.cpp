@@ -63,7 +63,7 @@ void Downloader::calcSpeed()
         currentTaskInfo.speed = speed;
         currentTaskInfo.percentage = percentage;
 
-//        qDebug() << "Per: " << percentage << " Eta: " << eta << "  Tx: " << _non_cache_transfered + last_transfered << "  Tot: " << file_size;
+        //        qDebug() << "Per: " << percentage << " Eta: " << eta << "  Tx: " << _non_cache_transfered + last_transfered << "  Tot: " << file_size;
     }
 }
 
@@ -92,7 +92,7 @@ void Downloader::finishedSize ()
     QVariant redirectionTarget = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
     if ( ! redirectionTarget.isNull() )
     {
-//        emit taskUrlRedir( reply->url().toString() , redirectionTarget.toUrl().toString() );
+        //        emit taskUrlRedir( reply->url().toString() , redirectionTarget.toUrl().toString() );
         qDebug() << "Redirected to: " << redirectionTarget.toUrl().toString();
 
         // retrieve file size firstly
@@ -207,7 +207,7 @@ void Downloader::finishedSize ()
         // start speed timer
         speedTimer.start(1000);
         logSaveTimer.start(1000);
-//        readyReadTimer.start(2000);
+        //        readyReadTimer.start(2000);
 
         if ( status.isEmpty() )
         {
@@ -222,7 +222,7 @@ void Downloader::finishedSize ()
                 else
                     end = begin + delta - 1;
 
-//                qDebug() << "Assign: " << begin << end;
+                //                qDebug() << "Assign: " << begin << end;
 
                 readBytes.insert(begin , 0);
 
@@ -244,13 +244,13 @@ void Downloader::finishedSize ()
                 unsigned long long begin = it.value() ,
                         end = it.key();
 
-//                qDebug() << "ReAssign: " << begin << end;
+                //                qDebug() << "ReAssign: " << begin << end;
 
                 readBytes.insert(begin , 0);
 
                 QNetworkRequest request ( reply->url() );
                 request.setRawHeader("Range" , QString ("bytes=%1-%2").arg(begin).arg(end).toAscii() );
-//                request.setRawHeader("Cookie" , _cookie.toAscii());
+                //                request.setRawHeader("Cookie" , _cookie.toAscii());
 
                 QNetworkReply *reply = nam->get( request );
                 connect (reply , SIGNAL(readyRead()) , SLOT(readyRead()));
@@ -317,12 +317,12 @@ void Downloader::finishedTransfer()
 
     if ( ContentRangeRegEx.indexIn( reply->rawHeader("Content-Range") ) != -1 )
     {
+        unsigned long long begin = ContentRangeRegEx.cap(1).toULongLong();
+        unsigned long long end   = ContentRangeRegEx.cap(2).toULongLong();
 
         if ( ! reply->error() )
         {
             // write un-finished buffer
-            unsigned long long begin = ContentRangeRegEx.cap(1).toULongLong();
-            unsigned long long end = ContentRangeRegEx.cap(2).toULongLong();
 
             if ( ! fp.seek( readBytes.value(begin) + begin ) )
             {
@@ -342,6 +342,29 @@ void Downloader::finishedTransfer()
         else if (reply->error() != QNetworkReply::OperationCanceledError)
         {
             qDebug() << "Error reading reply data: " << reply->errorString();
+            qDebug() << "Bytes transfered with this thread: " << readBytes.value(begin);
+
+            if (0)
+            {
+                qDebug() << "Restarting range in 5s: " << begin << end;
+
+                begin = readBytes.value(begin);
+
+                QEventLoop loop;
+                QTimer::singleShot(5000, &loop, SLOT(quit()));
+                loop.exec();
+
+                QNetworkRequest request ( reply->url() );
+                request.setRawHeader("Range",
+                                     QString ("bytes=%1-%2").arg(begin).arg(end).toAscii());
+
+                QNetworkReply *reply = nam->get(request);
+                connect (reply , SIGNAL(readyRead()) , SLOT(readyRead()));
+                connect (reply , SIGNAL(finished()) , SLOT(finishedTransfer()));
+
+                return;
+            }
+
         }
     }
 
@@ -356,7 +379,7 @@ void Downloader::finishedTransfer()
 
         running = false;
 
-//        qDebug() << " " << time_used << " seconds";
+        //        qDebug() << " " << time_used << " seconds";
 
         if ( transfered >= file_size - 1 )
         {
@@ -416,9 +439,9 @@ void Downloader::readyRead()
 
         const QByteArray & data = reply->readAll();
         downloadBuffers[begin].append(data);
-//        downloadBuffers.insert(begin , downloadBuffers.value(begin) + data);
+        //        downloadBuffers.insert(begin , downloadBuffers.value(begin) + data);
 
-//        qDebug() << begin << " Got: " << data.length() << " bytes";
+        //        qDebug() << begin << " Got: " << data.length() << " bytes";
 
         _non_cache_transfered += data.length();
 

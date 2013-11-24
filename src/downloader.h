@@ -19,6 +19,7 @@
 #ifndef DOWNLOADER_H
 #define DOWNLOADER_H
 
+#include <QEventLoop>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
