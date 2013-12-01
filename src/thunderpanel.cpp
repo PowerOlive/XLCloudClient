@@ -452,6 +452,7 @@ void ThunderPanel::setCloudTasks(const QList<Thunder::Task> &tasks)
             if (task.link.isEmpty() && i == 1 && task.type != Thunder::BT)
             {
                 items.at(i)->setBackground(QBrush (QColor("#9CC6EE")));
+                items.at(i)->setToolTip(QString ("Progress: %1%").arg(task.progress));
             }
             items.at(i)->setTextAlignment(Qt::AlignCenter);
         }

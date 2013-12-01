@@ -27,9 +27,13 @@ bool MediaPlayer::isPlaying()
     return mediaObject->state() == Phonon::PlayingState;
 }
 
-void MediaPlayer::play(const QString & filepath)
+void MediaPlayer::play(const QString & filePath)
 {
-    mediaObject->setCurrentSource (Phonon::MediaSource (filepath));
+#if QT_VERSION > QT_VERSION_CHECK(4, 8, 4)
+    mediaObject->setCurrentSource(QUrl::fromLocalFile(filePath));
+#else
+    mediaObject->setCurrentSource (Phonon::MediaSource (filePath));
+#endif
     mediaObject->play();
 }
 

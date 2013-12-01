@@ -646,13 +646,14 @@ void ThunderCore::parseCloudPage(const QByteArray &body, int pageNo, const QStri
         task.id     = taskMap.value("id").toString();
         task.type   = Thunder::Single;
 
-        task.source = taskMap.value("url").toString();
-        task.cid    = taskMap.value("cid").toString();
-        task.name   = taskMap.value("taskname").toString();
-        task.link   = taskMap.value("lixian_url").toString();
-        task.bt_url = taskMap.value("url").toString();
-        task.size   = taskMap.value("ysfilesize").toULongLong();
-        task.status = taskMap.value("download_status").toInt();
+        task.source   = taskMap.value("url").toString();
+        task.cid      = taskMap.value("cid").toString();
+        task.name     = taskMap.value("taskname").toString();
+        task.link     = taskMap.value("lixian_url").toString();
+        task.bt_url   = taskMap.value("url").toString();
+        task.size     = taskMap.value("ysfilesize").toULongLong();
+        task.status   = taskMap.value("download_status").toInt();
+        task.progress = taskMap.value("progress").toInt();
 
         if (! tmp_cookieIsStored)
         {

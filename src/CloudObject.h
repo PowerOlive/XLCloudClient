@@ -128,6 +128,8 @@ namespace Thunder
         {
             return name.isEmpty();
         }
+
+        int progress;
     };
 
     struct File
