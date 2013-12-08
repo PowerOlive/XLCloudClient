@@ -47,6 +47,7 @@ MPlayer::MPlayer(QWidget *parent) :
     loadSettings();
 
     QMPwidget::start(QStringList()
+                     << "-user-agent" << "Mozilla/5.0"
                      << "-cache" << m_bufferSize
                      << "-cookies"
                      << "-cookies-file"
