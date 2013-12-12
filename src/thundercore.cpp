@@ -291,7 +291,7 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
 
     if (urlStr.startsWith("http://dynamic.cloud.vip.xunlei.com/login"))
     {
-        get (QUrl("http://dynamic.cloud.vip.xunlei.com/user_task?st=0&userid=" +
+        get (QUrl("http://dynamic.cloud.vip.xunlei.com/user_task?userid=" +
                   tc_session.value("userid")));
 
         tc_loginStatus = NoError; emit StatusChanged (LoginChanged);
