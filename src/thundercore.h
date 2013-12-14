@@ -110,6 +110,8 @@ public:
     void addBatchTaskPre (const QString & urls);
     void addBatchTaskPost (const QStringList & urls);
 
+    void addMagnetTask (const QString & url);
+
     void uploadBitorrent (const QString & file);
     void commitBitorrentTask (const QList<Thunder::BTSubTask> &tasks);
     void getContentsOfBTFolder (const Thunder::Task &bt_task, const int &page);

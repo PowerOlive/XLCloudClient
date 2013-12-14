@@ -151,7 +151,15 @@ void AddCloudTask::slotRemoteTaskChanged(ThunderCore::RemoteTaskType type)
 
 void AddCloudTask::on_url_textChanged(const QString &arg1)
 {
-    tcore->addCloudTaskPre(arg1);
+    if (arg1.startsWith("magnet:"))
+    {
+        ui->url->clear();
+
+        ui->tabWidget->setCurrentIndex(1);
+        ui->magnet->setText (arg1);
+    }
+    else if (! arg1.isEmpty())
+        tcore->addCloudTaskPre(arg1);
 }
 
 void AddCloudTask::setSingleTaskInfo(Thunder::RemoteTask remote_task)
@@ -242,5 +250,5 @@ void AddCloudTask::on_getClipboardBtn_clicked()
 
 void AddCloudTask::on_magnet_textChanged(const QString &arg1)
 {
-    Q_UNUSED(arg1);
+    tcore->addMagnetTask(arg1);
 }

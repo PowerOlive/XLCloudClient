@@ -209,6 +209,17 @@ void ThunderCore::addCloudTaskPre(const QString &url)
     get (link);
 }
 
+void ThunderCore::addMagnetTask(const QString &url)
+{
+    QUrl link ("http://dynamic.cloud.vip.xunlei.com/interface/url_query?"
+               "callback=queryUrl&interfrom=task&random="
+               "1387004514910746411.906726174&tcache=1387004515771");
+    link.addQueryItem("u", url);
+
+    get (link);
+    return;
+}
+
 void ThunderCore::slotFinished(QNetworkReply *reply)
 {
     const QUrl & url = reply->url();
@@ -596,6 +607,39 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
 
     if (urlStr.startsWith("http://dynamic.cloud.vip.xunlei.com/interface/task_delay"))
     {
+        return;
+    }
+
+    if (urlStr.startsWith("http://dynamic.cloud.vip.xunlei.com/interface/url_query"))
+    {
+        tmp_btTask.subtasks.clear();
+
+        /* dirty hack, single file magnet link support ONLY */
+        const QStringList & fields = Util::parseFunctionFields(data);
+//        for (int i = 0; i < fields.size(); ++i )
+//            qDebug() << i << fields.at(i);
+
+        if (fields.size() < 8)
+        {
+            error (tr("Invalid magnet link response, parse error?"), Notice);
+        }
+        else
+        {
+            tmp_btTask.ftitle = fields.at(3);
+            tmp_btTask.btsize = fields.at(2).toULongLong();
+            tmp_btTask.infoid = fields.at(1);
+
+            Thunder::BTSubTask task;
+            task.name        = fields.at(5);
+            task.format_size = fields.at(6);
+            task.size        = fields.at(7);
+            task.id          = fields.at(1);
+            task.findex      = fields.at(4);
+
+            tmp_btTask.subtasks.append(task);
+        }
+
+        emit RemoteTaskChanged(BitorrentTaskReady);
         return;
     }
 
