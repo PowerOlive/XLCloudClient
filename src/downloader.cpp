@@ -19,6 +19,7 @@
 #include "downloader.h"
 
 #define LOG_SUFFIX ".td"
+#define SET_AND_PRINT_ERROR(a) do { lastError = (a); qDebug() << (a); } while (0);
 
 static const int thread_count = 5;
 static const QRegExp ContentRangeRegEx ("bytes ([0-9]+)-([0-9]+)/([0-9]+)");
@@ -114,7 +115,7 @@ void Downloader::finishedSize ()
 
         if ( ! ok || file_size == 0 )
         {
-            qDebug() << "Target doesn't support HTTP Range";
+            SET_AND_PRINT_ERROR("Target doesn't support HTTP Range");
             running = false;
             return;
         }
@@ -185,7 +186,8 @@ void Downloader::finishedSize ()
             }
             else
             {
-                qDebug() << "Error opening log file: " << sfp.errorString();
+                SET_AND_PRINT_ERROR("Cannot open '" + sfp.fileName() +
+                                    "' for reading: " + sfp.errorString());
                 sfp.remove();
             }
         }
@@ -194,7 +196,8 @@ void Downloader::finishedSize ()
 
         if ( ! fp.open(QIODevice::ReadWrite) )
         {
-            qDebug() << "Unable to write file: " << fp.errorString();
+            SET_AND_PRINT_ERROR("Cannot write '" + fp.fileName()
+                                + "'" + fp.errorString());
             emit taskStatusChanged(Failed);
             return;
         }
@@ -341,18 +344,25 @@ void Downloader::finishedTransfer()
         }
         else if (reply->error() != QNetworkReply::OperationCanceledError)
         {
+            if (status.contains(end))
+                begin = status.value(end);
+
             qDebug() << "Error reading reply data: " << reply->errorString();
-            qDebug() << "Bytes transfered with this thread: " << readBytes.value(begin);
+            qDebug() << "Bytes transfered with this thread: " << begin;
 
             if (1)
             {
-                qDebug() << "Restarting range in 5s: " << begin << end;
-
-                begin = readBytes.value(begin);
+                qDebug() << "Restarting thread in 5s " << begin << end;
 
                 QEventLoop loop;
                 QTimer::singleShot(5000, &loop, SLOT(quit()));
                 loop.exec();
+
+                // do not resume if interrupted
+                if (interrupted)
+                    return;
+
+                qDebug() << "Restarted " << begin << end;
 
                 QNetworkRequest request ( reply->url() );
                 request.setRawHeader("Range",
@@ -428,7 +438,7 @@ void Downloader::readyRead()
 
     if (reply->error())
     {
-        qDebug() << "Transfer Error: " << reply->errorString();
+        SET_AND_PRINT_ERROR("Transfer error: " + reply->errorString());
         return;
     }
 
@@ -450,7 +460,8 @@ void Downloader::readyRead()
 
             if ( ! fp.seek( readBytes.value(begin) + begin ) )
             {
-                qDebug() << "Seek error , data will be lost: " << fp.errorString();
+                SET_AND_PRINT_ERROR("File seek error in '" + fp.fileName() +
+                                    "', reason: " + fp.errorString());
                 return;
             }
 
