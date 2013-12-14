@@ -265,19 +265,49 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
 
     if (urlStr.startsWith("http://login.xunlei.com/sec2login/"))
     {
+        /* blogresult? another WTF name */
+        int blogresult = 0;
+
         foreach (const QNetworkCookie & cookie, tc_nam->cookieJar()->cookiesForUrl(url))
         {
             if (cookie.name() == "usernick")
             {
                 error (tr("User nick: %1").arg(QString::fromAscii(cookie.value())), Info);
             }
+            else if (cookie.name() == "blogresult")
+            {
+                blogresult = cookie.value().toInt();
+            }
 
             tc_session.insert(cookie.name(), cookie.value());
         }
 
+        switch (blogresult)
+        {
+        case 1:
+            /* Captcha */
+            error (tr("Wrong capcha submitted, re-fetching image .."), Notice);
+            tc_loginStatus = Failed; emit StatusChanged (LoginChanged);
+
+            /* TODO: */
+            get (QString("http://verify.xunlei.com/image?cachetime=1359365355018"));
+
+            break;
+        case 2:
+            /* Invalid credential combination */
+            error (tr("Logon failure, invalid credential combination"), Warning);
+            tc_loginStatus = Failed; emit StatusChanged (LoginChanged);
+
+            break;
+        case 0:
+            /* Success */
+        default:
+            break;
+        }
+
         if (! tc_session.contains("jumpkey"))
         {
-            error (tr("Logon failure"), Warning);
+            error (tr("Cannot retrieve jumpkey, is the protocol changed?"), Warning);
             tc_loginStatus = Failed; emit StatusChanged (LoginChanged);
 
             return;

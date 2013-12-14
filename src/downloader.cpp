@@ -344,7 +344,7 @@ void Downloader::finishedTransfer()
             qDebug() << "Error reading reply data: " << reply->errorString();
             qDebug() << "Bytes transfered with this thread: " << readBytes.value(begin);
 
-            if (0)
+            if (1)
             {
                 qDebug() << "Restarting range in 5s: " << begin << end;
 

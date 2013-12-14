@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Capcha</string>
+   <string>Enter Capcha</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
