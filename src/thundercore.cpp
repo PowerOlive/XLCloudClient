@@ -614,29 +614,33 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
     {
         tmp_btTask.subtasks.clear();
 
-        /* dirty hack, single file magnet link support ONLY */
         const QStringList & fields = Util::parseFunctionFields(data);
 //        for (int i = 0; i < fields.size(); ++i )
 //            qDebug() << i << fields.at(i);
 
-        if (fields.size() < 8)
+        if (fields.size() < 10)
         {
             error (tr("Invalid magnet link response, parse error?"), Notice);
         }
         else
         {
-            tmp_btTask.ftitle = fields.at(3);
-            tmp_btTask.btsize = fields.at(2).toULongLong();
             tmp_btTask.infoid = fields.at(1);
+            tmp_btTask.btsize = fields.at(2).toULongLong();
+            tmp_btTask.ftitle = fields.at(3);
 
+            /* dirty hack! */
+            int count = fields.size() / 8;
+            for (int i = 0; i < count; ++ i)
+            {
             Thunder::BTSubTask task;
-            task.name        = fields.at(5);
-            task.format_size = fields.at(6);
-            task.size        = fields.at(7);
             task.id          = fields.at(1);
-            task.findex      = fields.at(4);
+            task.name        = fields.at(5 +             i);
+            task.format_size = fields.at(5 +     count + i);
+            task.size        = fields.at(5 + 2 * count + i);
+            task.findex      = fields.at(5 + 5 * count + i);
 
             tmp_btTask.subtasks.append(task);
+            }
         }
 
         emit RemoteTaskChanged(BitorrentTaskReady);
