@@ -29,7 +29,8 @@ AddCloudTask::AddCloudTask(ThunderCore *tc, QWidget *parent) :
     ui(new Ui::AddCloudTask),
     tcore (tc),
     bt_model(new QStandardItemModel),
-    batch_model(new QStandardItemModel)
+    batch_model(new QStandardItemModel),
+    row_filter(QRegExp ("\\.(txt|url|html|htm|mht|exe|com)$"))
 {
     ui->setupUi(this);
     ui->tabWidget->setCurrentIndex(0);
@@ -44,6 +45,10 @@ AddCloudTask::AddCloudTask(ThunderCore *tc, QWidget *parent) :
                                            << tr("Size")
                                            << tr("Name"));
 
+    QAction *action = new QAction (tr("Select All"), this);
+    connect (action, SIGNAL(triggered()), SLOT(slotSelectAllRows()));
+    ui->tableViewBT->addAction(action);
+
     connect (tcore, SIGNAL(RemoteTaskChanged(ThunderCore::RemoteTaskType)),
              SLOT(slotRemoteTaskChanged(ThunderCore::RemoteTaskType)));
 }
@@ -51,6 +56,11 @@ AddCloudTask::AddCloudTask(ThunderCore *tc, QWidget *parent) :
 AddCloudTask::~AddCloudTask()
 {
     delete ui;
+}
+
+void AddCloudTask::slotSelectAllRows()
+{
+    ui->tableViewBT->selectAll();
 }
 
 void AddCloudTask::showEvent(QShowEvent *e)
@@ -75,6 +85,11 @@ void AddCloudTask::loadBrowserLinks(const QString &urls)
 {
     ui->tabWidget->setCurrentIndex(2);
     tcore->addBatchTaskPre (urls);
+}
+
+void AddCloudTask::setRowFilter(const QString &regex)
+{
+    row_filter.setPattern(regex);
 }
 
 void AddCloudTask::slotRemoteTaskChanged(ThunderCore::RemoteTaskType type)
@@ -113,9 +128,15 @@ void AddCloudTask::slotRemoteTaskChanged(ThunderCore::RemoteTaskType type)
             items.first()->setData(task.findex, Qt::UserRole + OFFSET_FINDEX);
 
             bt_model->appendRow(items);
+
+            if (row_filter.indexIn(task.name.toLower()) == -1)
+                for (int i = 0; i < 2; ++ i)
+                    ui->tableViewBT->selectionModel()->select(
+                                bt_model->index(bt_model->rowCount() - 1, i),
+                                QItemSelectionModel::Select);
         }
 
-        ui->tableViewBT->selectAll();
+        //        ui->tableViewBT->selectAll();
     }
         break;
     case ThunderCore::BatchTaskReady:

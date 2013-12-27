@@ -51,6 +51,8 @@ public:
         AddBatchTask
     };
 
+    void setRowFilter (const QString & regex);
+
     void loadBrowserLinks (const QString & urls);
     void loadDraggedInTorrent (const QUrl & url);
 
@@ -72,6 +74,8 @@ private slots:
 
     void on_magnet_textChanged(const QString &arg1);
 
+    void slotSelectAllRows ();
+
 protected:
     void showEvent(QShowEvent *e);
 
@@ -83,6 +87,8 @@ private:
     Thunder::RemoteTask tmp_singleRemoteTask;
 
     QStandardItemModel *bt_model, *batch_model;
+
+    QRegExp row_filter;
 
 signals:
     void requestChanged (AddCloudTask::RequestType type);
