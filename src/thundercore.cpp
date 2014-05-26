@@ -615,8 +615,8 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
         tmp_btTask.subtasks.clear();
 
         const QStringList & fields = Util::parseFunctionFields(data);
-//        for (int i = 0; i < fields.size(); ++i )
-//            qDebug() << i << fields.at(i);
+        //        for (int i = 0; i < fields.size(); ++i )
+        //            qDebug() << i << fields.at(i);
 
         if (fields.size() < 10)
         {
@@ -629,17 +629,29 @@ void ThunderCore::slotFinished(QNetworkReply *reply)
             tmp_btTask.ftitle = fields.at(3);
 
             /* dirty hack! */
-            int count = fields.size() / 8;
-            for (int i = 0; i < count; ++ i)
-            {
-            Thunder::BTSubTask task;
-            task.id          = fields.at(1);
-            task.name        = fields.at(5 +             i);
-            task.format_size = fields.at(5 +     count + i);
-            task.size        = fields.at(5 + 2 * count + i);
-            task.findex      = fields.at(5 + 5 * count + i);
+            int count = fields.size() - 2 /* last two fields */ - 5 /* top 5 fields */;
 
-            tmp_btTask.subtasks.append(task);
+            /* 6 different "arrays"
+             * 0 array of file names
+             * 1 array of sizes (formatted)
+             * 2 array of raw sizes (in bytes)
+             * 3 array of unknown fields (never mind)
+             * 4 array of file extentions (icons)
+             * 5 array of raw file NO. (maintaining an list order?!)
+            */
+            int subs  = count / 6;
+
+//            qDebug() << "Torrent tasks count" << subs;
+            for (int i = 0; i < subs; ++ i)
+            {
+                Thunder::BTSubTask task;
+                task.id          = fields.at(1);
+                task.name        = fields.at(5 + 0 * subs + i);
+                task.format_size = fields.at(5 + 1 * subs + i);
+                task.size        = fields.at(5 + 2 * subs + i);
+                task.findex      = fields.at(5 + 5 * subs + i);
+
+                tmp_btTask.subtasks.append(task);
             }
         }
 
