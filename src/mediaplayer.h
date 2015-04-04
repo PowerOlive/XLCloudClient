@@ -2,6 +2,7 @@
 #define MEDIAPLAYER_H
 
 #include <QObject>
+#include <QUrl>
 #include <phonon/audiooutput.h>
 #include <phonon/seekslider.h>
 #include <phonon/mediaobject.h>

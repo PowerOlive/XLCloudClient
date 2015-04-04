@@ -83,6 +83,17 @@ MainWindow::MainWindow(QWidget *parent) :
         restoreGeometry( settings.value("Geometry").toByteArray() );
     }
 
+    /// remove all icons in MAC
+#ifdef Q_OS_MAC
+    foreach (QMenu *menu, this->menuBar()->findChildren<QMenu*>())
+    {
+        foreach (QAction *actions, menu->actions())
+        {
+            actions->setIconVisibleInMenu(false);
+        }
+    }
+#endif
+
     login ();
 }
 

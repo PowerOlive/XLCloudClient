@@ -20,6 +20,8 @@ isEmpty (PREFIX) {
 
 mac {
     ICON = app.icns
+    INCLUDEPATH += /usr/local/homebrew/include
+    LIBPATH += /usr/local/homebrew/lib
 }
     
 message ("Install prefix set to $${PREFIX}")

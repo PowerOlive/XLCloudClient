@@ -57,11 +57,12 @@ ThunderPanel::ThunderPanel(QWidget *parent) :
     ui->filterPanel->hide();
 
     QAction *action;
-    if (Q_OS_MAC)
+#ifdef Q_OS_MAC
         action = new QAction (tr("Preview"), this);
-    else
+#else
         action = new QAction (QIcon(":/resources/images/movie.png"),
                                    tr("Preview"), this);
+#endif
 
     connect (action, SIGNAL(triggered()), SLOT(slotPreviewThisTask()));
     my_contextMenu->addAction(action);
@@ -71,12 +72,12 @@ ThunderPanel::ThunderPanel(QWidget *parent) :
     my_contextMenu->addAction(action);
     my_contextMenu->addSeparator();
 
-    if (Q_OS_MAC)
+#ifdef Q_OS_MAC
         action = new QAction (tr("&Remove selected tasks"), this);
-    else
+#else
         action = new QAction (QIcon(":/resources/images/user-trash.png"),
                               tr("&Remove selected tasks"), this);
-
+#endif
 
     connect (action, SIGNAL(triggered()), SLOT(slotRemoveTheseTasks()));
     my_contextMenu->addAction(action);
