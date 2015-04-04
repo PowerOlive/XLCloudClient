@@ -17,6 +17,10 @@ LIBS += -lqjson
 isEmpty (PREFIX) {
     PREFIX = /usr
 }
+
+mac {
+    ICON = app.icns
+}
     
 message ("Install prefix set to $${PREFIX}")
 
