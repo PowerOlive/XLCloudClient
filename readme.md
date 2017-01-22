@@ -22,12 +22,6 @@ Mac 可以直接使用 bin 下面的app
 
 另外，如果你真的喜欢这个服务，请支持它！
 
-## 注意
-
-**老版本**的功能会逐渐添加回来（翻墙自己看）
-
-    http://c0debreak.blogspot.com/2012/03/thunder-vip-cloud-client-for-linux-by.html
-
 ## 使用方法：
 
 首先在Edit->Preferences里面设置你的用户名和密码，密码明文输入，保存md5. 
