@@ -35,20 +35,20 @@ Mac 可以直接使用 bin 下面的app
 
 **注意： 从 0.61 开始，你可以按下CTRL + F对任务名字进行过滤了**
 
-![Screenshot] (https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/1.png "Desktop screenshot")
+![Screenshot](https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/1.png "Desktop screenshot")
 
 集成MPlayer了，看片比较爽：
 
-![Screenshot] (https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/2.png "Desktop screenshot")
+![Screenshot](https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/2.png "Desktop screenshot")
 
 从0.42开始，你可以直接从URL里面读取链接，正则表达式目前设定为 "ed2k://", **设置verycd账户密码之后，可以自动登录电驴:**
 
-![Screenshot] (https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/3.png "Desktop screenshot")
+![Screenshot](https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/3.png "Desktop screenshot")
 
 抄袭一下迷你迅雷的界面！
 
-![Screenshot] (https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/4.png "Desktop screenshot")
+![Screenshot](https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/4.png "Desktop screenshot")
 
 0.32 版本之后可以同时添加多个任务，你可以直接读取剪贴板或者手动输入URL.
 
-![Screenshot] (https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/5.png "Desktop screenshot")
+![Screenshot](https://raw.github.com/CaledoniaProject/XLCloudClient/master/contrib/screenshot/5.png "Desktop screenshot")
